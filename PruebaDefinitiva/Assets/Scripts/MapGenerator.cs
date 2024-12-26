@@ -17,9 +17,9 @@ public class MapGenerator : MonoBehaviour
         mapSize = GameManager.Instance.size;
         Debug.Log(mapSize);
         map = new int[mapSize, mapSize];
-        TileGenerator(mapSize, map);
+        //TileGenerator(mapSize, map);
     }
-
+    /*
     public void TileGenerator(int mapSize, int[,] map)
     {
         for (int x = 0; x < mapSize; x++)
@@ -52,7 +52,7 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
 
     public int TilePainter(int[] tilesTypes)
     {

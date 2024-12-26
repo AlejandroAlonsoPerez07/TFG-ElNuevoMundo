@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7523455308665748877
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2350236484221898715, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_Name
+      value: Desert Tile
+      objectReference: {fileID: 0}
+    - target: {fileID: 6041841546551355415, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 42a5bc4be6155934d875b65d00d0e3b1, type: 3}
+    - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2350236484221898715, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4428159424409223513}
+  m_SourcePrefab: {fileID: 100100000, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+--- !u!1 &3445543581468195036 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5168348001399571793, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+  m_PrefabInstance: {fileID: 7523455308665748877}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &4301008417279939994 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6041841546551355415, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+  m_PrefabInstance: {fileID: 7523455308665748877}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5257135762448183894 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2350236484221898715, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+  m_PrefabInstance: {fileID: 7523455308665748877}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-4428159424409223513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5257135762448183894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ef4f7654f436ab4f95aaf8a6b177d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileRenderer: {fileID: 4301008417279939994}
+  highLight: {fileID: 3445543581468195036}
