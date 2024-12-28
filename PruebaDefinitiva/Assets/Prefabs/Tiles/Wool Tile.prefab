@@ -8,6 +8,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 634002956970854156, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 634002956970854156, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 634002956970854156, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 634002956970854156, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2350236484221898715, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_Name
       value: Wool Tile
@@ -15,7 +31,11 @@ PrefabInstance:
     - target: {fileID: 6041841546551355415, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 4a3026d662e34504f8e87d53c10f2300, type: 3}
+      objectReference: {fileID: 21300000, guid: 76cf672991ba4054999c18e0f8b5a56e, type: 3}
+    - target: {fileID: 6041841546551355415, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8334797609385685560, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
