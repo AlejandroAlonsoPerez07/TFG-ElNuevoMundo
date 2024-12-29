@@ -15,12 +15,12 @@ public class Tile : MonoBehaviour
     void OnMouseEnter()
     {
         highLight.SetActive(true);
-        Debug.Log("true");
+        Debug.Log("true" + this.name);
     }
 
     void OnMouseExit()
     {
         highLight.SetActive(false);
-        Debug.Log("false");
+        Debug.Log("false" + this.name);
     }
 }

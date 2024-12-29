@@ -11,6 +11,9 @@ public class GridManager : MonoBehaviour
         mountainTile, waterTile, wheatTile, woodTile, woolTile; // objeto Tile
     [SerializeField] private Transform cam; // camara
 
+    // parte nueva
+    [SerializeField] private GameObject gridVisualization;
+
     private Dictionary<Vector2, Tile> tiles;
     
     void Awake()
@@ -24,39 +27,33 @@ public class GridManager : MonoBehaviour
         tiles = new Dictionary<Vector2, Tile>();
         width = GameManager.Instance.size;
         height = GameManager.Instance.size;
+        gridVisualization.SetActive(true);
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 if ((x == 0 || x == width - 1) || (y == 0 || y == height - 1))
                 {
-                    var spawnedWaterTile = Instantiate(waterTile, new Vector3(x, y), Quaternion.identity);
+                    // Al multiplicar por 2 los valores de (x,y) mantienes la escala
+                    var spawnedWaterTile = Instantiate(waterTile, new Vector3(x*2, y*2), Quaternion.identity);
+                    spawnedWaterTile.transform.localScale = new Vector3(2f, 2f, 1f); // Modifica el tamaño de la casilla
                     spawnedWaterTile.Init(x, y);
                     tiles[new Vector2(x, y)] = spawnedWaterTile;
                 }
                 else if (x == width / 2 && y == height / 2) 
                 {
-                    var spawnedDesertTile = Instantiate(desertTile, new Vector3(x, y), Quaternion.identity);
+                    var spawnedDesertTile = Instantiate(desertTile, new Vector3(x*2, y*2), Quaternion.identity);
+                    spawnedDesertTile.transform.localScale = new Vector3(2f, 2f, 1f);
                     spawnedDesertTile.Init(x, y);
                     tiles[new Vector2(x, y)] = spawnedDesertTile;
                 }
                 else
                 {
-                    var spawnedRandomTile = SpawnRandomTile(x, y);
+                    var spawnedRandomTile = SpawnRandomTile(x*2, y*2);
+                    spawnedRandomTile.transform.localScale = new Vector3(2f, 2f, 1f);
                     spawnedRandomTile.Init(x, y);
                     tiles[new Vector2(x, y)] = spawnedRandomTile;
                 }
-
-                /*
-                var randomTile = Random.Range(0, 6) == 3 ? mountainTile : grassTile;
-                var spawnedTile = Instantiate(randomTile, new Vector3(x, y), Quaternion.identity);
-                spawnedTile.name = $"Tile {x} {y}"; // Aqui vemos como se crean todas las casillas en la jerarqu�a
-
-                spawnedTile.Init(x, y);
-
-
-                tiles[new Vector2(x, y)] = spawnedTile;
-                */
             }
         }
 
