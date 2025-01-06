@@ -95,6 +95,7 @@ public class BuildingManager : MonoBehaviour
             return;
 
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
+        mouseIndicator.transform.position = mousePosition;
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
         
         if (lastDetectedPosition != gridPosition)
