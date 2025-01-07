@@ -6,12 +6,19 @@ using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance;
+
     [SerializeField] private Camera sceneCamera;
     [SerializeField] private LayerMask placementLayerMask;
 
     private Vector3 lastPosition;
 
     public event Action OnClicked, OnExit;
+    
+    void Awake()
+    {
+        Instance = this;
+    }
 
     public void Update()
     {
@@ -31,7 +38,7 @@ public class InputManager : MonoBehaviour
     public Vector3 GetSelectedMapPosition()
     {
         Vector3 mousePos = Input.mousePosition;
-        Debug.Log("mousePos: " + mousePos);
+        Debug.Log("mousePos X: " + mousePos.x + " mousePos Y: " + mousePos.y + " mousePos Z: " + mousePos.z);
         mousePos.z = sceneCamera.nearClipPlane;
         Ray ray = sceneCamera.ScreenPointToRay(mousePos);
         RaycastHit hit;

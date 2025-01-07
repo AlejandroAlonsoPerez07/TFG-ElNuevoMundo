@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
 {
+    public static BuildingManager Instance;
+
     [SerializeField] GameObject mouseIndicator;
     [SerializeField] BuildingsDatabaseOS dataBase;
     [SerializeField] InputManager inputManager;
@@ -14,6 +16,10 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private PreviewSystem preview;
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
 
+    void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         StopPlacement();
@@ -89,13 +95,14 @@ public class BuildingManager : MonoBehaviour
 
     }
 
-    private void Update()
+    public void Update()
     {
-        if(selectedObjectIndex < 0)
+        if (selectedObjectIndex < 0)
             return;
 
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         mouseIndicator.transform.position = mousePosition;
+        Debug.Log(mousePosition + " mousePosition(Building Manager)");
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
         
         if (lastDetectedPosition != gridPosition)

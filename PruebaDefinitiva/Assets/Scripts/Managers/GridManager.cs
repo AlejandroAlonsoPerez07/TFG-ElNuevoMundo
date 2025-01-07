@@ -60,11 +60,12 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        // Con esto transformo la posici�n de la c�mara para que quede centrada en el mapa que haga
-        // en funci�n de altura y anchura
+        // Con esto transformo la posicion de la camara para que quede centrada en el mapa que haga
+        // en funcion de altura y anchura
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -1);
 
         GameManager.Instance.UpdateGameState(GameManager.GameState.SpawnHeroes);
+        Debug.Log("avanzo a SpawnHeroes: " + GameManager.Instance.State);
     }
 
     public Tile GetTileAtPosition(Vector2 position)

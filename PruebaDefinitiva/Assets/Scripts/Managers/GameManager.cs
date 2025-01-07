@@ -38,9 +38,12 @@ public class GameManager : MonoBehaviour
             case GameState.CreatingGame:
                 break;
             case GameState.GenerateGrid:
+                Debug.Log("entro en el estado generar grid");
                 GridManager.Instance.GenerateGrid();
                 break;
             case GameState.SpawnHeroes:
+                Debug.Log("entro en el estado spawn heroes");
+                BuildingManager.Instance.Update();
                 break;
             case GameState.SpawnEnemies:
                 break;

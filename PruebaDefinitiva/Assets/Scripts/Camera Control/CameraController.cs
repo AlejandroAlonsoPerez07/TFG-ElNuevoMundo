@@ -19,6 +19,7 @@ public class CameraController : MonoBehaviour
     private Coroutine panCoroutine;
     private Coroutine zoomCoroutine;
 
+    
     public void OnPanChange(InputAction.CallbackContext context)
     {
         if (context.performed)
