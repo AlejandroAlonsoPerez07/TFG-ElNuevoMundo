@@ -35,24 +35,24 @@ public class GridManager : MonoBehaviour
                 if ((x == 0 || x == width - 1) || (z == 0 || z == height - 1))
                 {
                     // Al multiplicar por 2 los valores de (x,y) mantienes la escala
-                    var spawnedWaterTile = Instantiate(waterTile, new Vector3(x*2, 0, z*2), Quaternion.identity);
-                    spawnedWaterTile.transform.localScale = new Vector3(2f, 2f, 1f); // Modifica el tamaño de la casilla
+                    var spawnedWaterTile = Instantiate(waterTile, new Vector3(x*4, 0, z*4), Quaternion.identity);
+                    spawnedWaterTile.transform.localScale = new Vector3(4f, 4f, 1f); // Modifica el tamaño de la casilla
                     spawnedWaterTile.transform.rotation = Quaternion.Euler(90, 0, 0); // Rota las casillas
                     spawnedWaterTile.Init(x, z);
                     tiles[new Vector2(x, z)] = spawnedWaterTile;
                 }
                 else if (x == width / 2 && z == height / 2) 
                 {
-                    var spawnedDesertTile = Instantiate(desertTile, new Vector3(x*2, 0, z *2), Quaternion.identity);
-                    spawnedDesertTile.transform.localScale = new Vector3(2f, 2f, 1f);
+                    var spawnedDesertTile = Instantiate(desertTile, new Vector3(x*4, 0, z *4), Quaternion.identity);
+                    spawnedDesertTile.transform.localScale = new Vector3(4f, 4f, 1f);
                     spawnedDesertTile.transform.rotation = Quaternion.Euler(90, 0, 0);
                     spawnedDesertTile.Init(x, z);
                     tiles[new Vector2(x, z)] = spawnedDesertTile;
                 }
                 else
                 {
-                    var spawnedRandomTile = SpawnRandomTile(x*2, z*2);
-                    spawnedRandomTile.transform.localScale = new Vector3(2f, 2f, 1f);
+                    var spawnedRandomTile = SpawnRandomTile(x*4, z*4);
+                    spawnedRandomTile.transform.localScale = new Vector3(4f, 4f, 1f);
                     spawnedRandomTile.transform.rotation = Quaternion.Euler(90, 0, 0);
                     spawnedRandomTile.Init(x, z);
                     tiles[new Vector2(x, z)] = spawnedRandomTile;
@@ -63,7 +63,10 @@ public class GridManager : MonoBehaviour
         // Con esto transformo la posicion de la camara para que quede centrada en el mapa que haga
         // en funcion de altura y anchura
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -1);
-
+        Debug.Log("el valor de width es: " + width);
+        gridVisualization.transform.position = new Vector3((float)(width - 1) * 2, (float)0.25, (height - 1) * 2);
+        gridVisualization.transform.localScale = new Vector3((float)width / 2.5f, 1, (float)height / 2.5f);
+        Instance.GetComponentInChildren<Grid>().transform.position = new Vector3(-2, (float)0.25, -2);
         GameManager.Instance.UpdateGameState(GameManager.GameState.SpawnHeroes);
         Debug.Log("avanzo a SpawnHeroes: " + GameManager.Instance.State);
     }

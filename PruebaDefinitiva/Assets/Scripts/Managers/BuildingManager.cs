@@ -51,13 +51,18 @@ public class BuildingManager : MonoBehaviour
 
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+        //gridPosition.x += 1;
+        //gridPosition.y += 0;
+        //gridPosition.z += 1;
+        Debug.Log("posicion edificio: " + gridPosition);
 
         bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
         if (placementValidity == false)
             return;
 
         GameObject newObject = Instantiate(dataBase.buildingData[selectedObjectIndex].prefab);
-        newObject.transform.position = grid.CellToWorld(gridPosition);
+        Vector3 cellCenterPosition = grid.GetCellCenterWorld(gridPosition); // obtenemos el centro de la casilla correspondiente a sus coordenadas del mundo
+        newObject.transform.position = cellCenterPosition;
         placedGameObjects.Add(newObject);
         GridData selectedData = dataBase.buildingData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
         
@@ -65,7 +70,7 @@ public class BuildingManager : MonoBehaviour
             dataBase.buildingData[selectedObjectIndex].Size,
             dataBase.buildingData[selectedObjectIndex].ID,
             placedGameObjects.Count - 1);
-        preview.UpdatePosition(grid.CellToWorld(gridPosition), false);
+        preview.UpdatePosition(cellCenterPosition, false);
     }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
@@ -104,12 +109,14 @@ public class BuildingManager : MonoBehaviour
         mouseIndicator.transform.position = mousePosition;
         Debug.Log(mousePosition + " mousePosition(Building Manager)");
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
-        
+
+        Vector3 cellCenterPosition = grid.GetCellCenterWorld(gridPosition); // consigo el centro de la casilla en funcion de su posicion
+
         if (lastDetectedPosition != gridPosition)
         {
             bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
             mouseIndicator.transform.position = mousePosition;
-            preview.UpdatePosition(grid.CellToWorld(gridPosition), placementValidity);
+            preview.UpdatePosition(cellCenterPosition, placementValidity);
             lastDetectedPosition = gridPosition;
         }
     }

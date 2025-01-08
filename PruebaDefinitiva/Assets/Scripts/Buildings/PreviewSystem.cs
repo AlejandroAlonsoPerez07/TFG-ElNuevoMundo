@@ -6,28 +6,32 @@ using UnityEngine;
 public class PreviewSystem : MonoBehaviour
 {
     [SerializeField] private float previewYOffset = 0.06f;
-    //[SerializeField] private GameObject cellIndicador;
+    [SerializeField] private GameObject cellIndicador;
     private GameObject previewObject;
     [SerializeField] private Material previewMaterialPrefab;
     private Material previewMaterialInstance;
-    //private Renderer cellIndicatorRenderer;
+    private Renderer cellIndicatorRenderer;
 
     private void Start()
     {
         previewMaterialInstance = new Material(previewMaterialPrefab);
+        cellIndicador.SetActive(false);
+        cellIndicatorRenderer = cellIndicador.GetComponentInChildren<Renderer>();
     }
     public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
     {
         previewObject = Instantiate(prefab);
         PreparePreview(previewObject);
         PrepareCursor(size);
+        cellIndicador.SetActive(true);
     }
 
     private void PrepareCursor(Vector2Int size)
     {
         if (size.x > 0 || size.y > 0)
         {
-
+            cellIndicador.transform.localScale = new Vector3(size.x, 1, size.y);
+            cellIndicatorRenderer.material.mainTextureScale = size;
         }
     }
 
@@ -47,25 +51,33 @@ public class PreviewSystem : MonoBehaviour
 
     public void StopShowingPreview()
     {
+        cellIndicador.SetActive(false);
         Destroy(previewObject);
     }
 
     public void UpdatePosition(Vector3 position, bool validity)
     {
         MovePreview(position);
-        //MoveCursor(position);
+        MoveCursor(position);
         ApplyFeedback(validity);
     }
 
     private void ApplyFeedback(bool validity)
     {
         Color c = validity ? Color.white : Color.red;
+        cellIndicatorRenderer.material.color = c;
         c.a = 0.5f;
         previewMaterialInstance.color = c;
+    }
+
+    private void MoveCursor(Vector3 position)
+    {
+        cellIndicador.transform.position = position;
     }
 
     private void MovePreview(Vector3 position)
     {
         previewObject.transform.position = new Vector3(position.x, position.y + previewYOffset, position.z);
+        Debug.Log("posicion en Preview: " + previewObject.transform.position);
     }
 }
