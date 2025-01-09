@@ -37,7 +37,6 @@ public class BuildingManager : MonoBehaviour
             Debug.LogError($"No ID found {ID}");
             return;
         }
-        //gridVisualization.SetActive(true);
         preview.StartShowingPlacementPreview(dataBase.buildingData[selectedObjectIndex].prefab,
             dataBase.buildingData[selectedObjectIndex].Size);
         inputManager.OnClicked += PlaceStructure;
@@ -51,10 +50,6 @@ public class BuildingManager : MonoBehaviour
 
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
-        //gridPosition.x += 1;
-        //gridPosition.y += 0;
-        //gridPosition.z += 1;
-        Debug.Log("posicion edificio: " + gridPosition);
 
         bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
         if (placementValidity == false)
@@ -63,6 +58,7 @@ public class BuildingManager : MonoBehaviour
         GameObject newObject = Instantiate(dataBase.buildingData[selectedObjectIndex].prefab);
         Vector3 cellCenterPosition = grid.GetCellCenterWorld(gridPosition); // obtenemos el centro de la casilla correspondiente a sus coordenadas del mundo
         newObject.transform.position = cellCenterPosition;
+        newObject.layer = LayerMask.NameToLayer("Building");
         placedGameObjects.Add(newObject);
         GridData selectedData = dataBase.buildingData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
         
@@ -75,14 +71,39 @@ public class BuildingManager : MonoBehaviour
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
+        // Validar si se puede colocar en la cuadrícula en la que apunta
         GridData selectedData = dataBase.buildingData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
-        return selectedData.CanPlaceObjectAt(gridPosition, dataBase.buildingData[selectedObjectIndex].Size);
+
+        // Si estamos en el caso de los "caminos" hacemos esto
+        if (selectedData == floorData)
+            if(selectedData.CanPlaceObjectAt(gridPosition, dataBase.buildingData[selectedObjectIndex].Size))
+                return true;
+
+        if (!selectedData.CanPlaceObjectAt(gridPosition, dataBase.buildingData[selectedObjectIndex].Size))
+            return false;
+
+        // Obtener la posición en el mundo para el centro de la celda
+        Vector3 cellCenterPosition = grid.GetCellCenterWorld(gridPosition);
+
+        // Verificar colisiones con otros edificios dentro del radio y en la capa de Building
+        Collider[] colliders = Physics.OverlapBox(cellCenterPosition, new Vector3(4f, 0.1f, 4f), // Cambia según el tamaño del BoxColider
+        Quaternion.identity,
+        LayerMask.GetMask("Building"));
+        foreach (var collider in colliders)
+        {
+            if (collider.gameObject != null)
+            {
+                Debug.Log($"Edificio detectado dentro del radio: {collider.gameObject.name}");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void StopPlacement()
     {
         selectedObjectIndex = -1;
-        //gridVisualization.SetActive(false);
         preview.StopShowingPreview();
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
@@ -92,7 +113,6 @@ public class BuildingManager : MonoBehaviour
     private void OnParticleSystemStopped()
     {
         selectedObjectIndex = -1;
-        //gridVisualization.SetActive(false);
         preview.StopShowingPreview();
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
@@ -107,10 +127,10 @@ public class BuildingManager : MonoBehaviour
 
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         mouseIndicator.transform.position = mousePosition;
-        Debug.Log(mousePosition + " mousePosition(Building Manager)");
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
-        Vector3 cellCenterPosition = grid.GetCellCenterWorld(gridPosition); // consigo el centro de la casilla en funcion de su posicion
+        // Consigo el centro de la casilla en funcion de su posicion
+        Vector3 cellCenterPosition = grid.GetCellCenterWorld(gridPosition); 
 
         if (lastDetectedPosition != gridPosition)
         {

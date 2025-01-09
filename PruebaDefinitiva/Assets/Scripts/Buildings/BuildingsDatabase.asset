@@ -16,12 +16,15 @@ MonoBehaviour:
   - <Name>k__BackingField: Floor
     <ID>k__BackingField: 0
     <Size>k__BackingField: {x: 1, y: 1}
+    <actionRadius>k__BackingField: 0
     <prefab>k__BackingField: {fileID: 1504196121286777116, guid: 1da2bdc19f99fba44a9e19c2371eae08, type: 3}
   - <Name>k__BackingField: Village
     <ID>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
+    <actionRadius>k__BackingField: 1.2
     <prefab>k__BackingField: {fileID: 5226549936381267302, guid: 8fa7cf68dcba6e541a32bceb771d122e, type: 3}
   - <Name>k__BackingField: City
     <ID>k__BackingField: 2
     <Size>k__BackingField: {x: 1, y: 1}
+    <actionRadius>k__BackingField: 1.2
     <prefab>k__BackingField: {fileID: 6277664099655870467, guid: ab724c1978cf3e44ab82e47b26d56ae3, type: 3}

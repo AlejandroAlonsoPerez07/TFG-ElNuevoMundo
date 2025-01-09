@@ -753,6 +753,7 @@ MonoBehaviour:
   previewYOffset: 0.06
   cellIndicador: {fileID: 2120285826}
   previewMaterialPrefab: {fileID: 2100000, guid: 1925d608fa9c32c4288ff9166ff0dea9, type: 2}
+  actionRadiusPrefab: {fileID: 56510726944143234, guid: ebab4ff48556a384d8aa8f77b1ce44a9, type: 3}
 --- !u!1 &561357502
 GameObject:
   m_ObjectHideFlags: 0
@@ -1795,7 +1796,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

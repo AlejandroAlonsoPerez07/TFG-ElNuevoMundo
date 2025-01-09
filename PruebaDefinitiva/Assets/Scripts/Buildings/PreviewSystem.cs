@@ -12,11 +12,20 @@ public class PreviewSystem : MonoBehaviour
     private Material previewMaterialInstance;
     private Renderer cellIndicatorRenderer;
 
+    [SerializeField] private GameObject actionRadiusPrefab;
+    private GameObject actionRadiusIndicator;
+
     private void Start()
     {
         previewMaterialInstance = new Material(previewMaterialPrefab);
         cellIndicador.SetActive(false);
         cellIndicatorRenderer = cellIndicador.GetComponentInChildren<Renderer>();
+        // Inicializa el radio de acción
+        if (actionRadiusPrefab != null)
+        {
+            actionRadiusIndicator = Instantiate(actionRadiusPrefab);
+            actionRadiusIndicator.SetActive(false);
+        }
     }
     public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
     {
@@ -24,6 +33,12 @@ public class PreviewSystem : MonoBehaviour
         PreparePreview(previewObject);
         PrepareCursor(size);
         cellIndicador.SetActive(true);
+        // Configura el radio de acción
+        if (actionRadiusIndicator != null)
+        {
+            actionRadiusIndicator.transform.localScale = new Vector3(1.2f, 0.01f, 1.2f);
+            actionRadiusIndicator.SetActive(true);
+        }
     }
 
     private void PrepareCursor(Vector2Int size)
@@ -53,6 +68,11 @@ public class PreviewSystem : MonoBehaviour
     {
         cellIndicador.SetActive(false);
         Destroy(previewObject);
+
+        if (actionRadiusIndicator != null)
+        {
+            actionRadiusIndicator.SetActive(false);
+        }
     }
 
     public void UpdatePosition(Vector3 position, bool validity)
@@ -60,6 +80,8 @@ public class PreviewSystem : MonoBehaviour
         MovePreview(position);
         MoveCursor(position);
         ApplyFeedback(validity);
+        // Mueve el radio de acción junto con el objeto
+        MoveActionRadius(position);
     }
 
     private void ApplyFeedback(bool validity)
@@ -68,16 +90,35 @@ public class PreviewSystem : MonoBehaviour
         cellIndicatorRenderer.material.color = c;
         c.a = 0.5f;
         previewMaterialInstance.color = c;
+        // Feedback recibido del plano de accion
+        if (actionRadiusIndicator != null)
+        {
+            Renderer radiusRenderer = actionRadiusIndicator.GetComponent<Renderer>();
+            if (radiusRenderer != null)
+            {
+                radiusRenderer.material.color = c;
+            }
+        }
     }
 
+    // Mueve el cursor en funcion de la casilla en la que nos encontramos
     private void MoveCursor(Vector3 position)
     {
         cellIndicador.transform.position = position;
     }
 
+    // Mueve la previsualizacion del edificio en funcion de la posicion del raton
     private void MovePreview(Vector3 position)
     {
         previewObject.transform.position = new Vector3(position.x, position.y + previewYOffset, position.z);
-        Debug.Log("posicion en Preview: " + previewObject.transform.position);
+    }
+
+    // Desplaza el radio la posicion recibida del raton
+    private void MoveActionRadius(Vector3 position)
+    {
+        if (actionRadiusIndicator != null)
+        {
+            actionRadiusIndicator.transform.position = new Vector3(position.x, position.y, position.z);
+        }
     }
 }
