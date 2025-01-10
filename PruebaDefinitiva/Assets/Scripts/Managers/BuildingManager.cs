@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -11,10 +12,11 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] InputManager inputManager;
     [SerializeField] Grid grid;
     private GridData floorData, furnitureData;
-    private List<GameObject> placedGameObjects = new();
+    public List<GameObject> placedGameObjects = new();
     private int selectedObjectIndex = -1;
     [SerializeField] private PreviewSystem preview;
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
+    public List<Vector2> placedGameObjectsPositions = new();
 
     void Awake()
     {
@@ -61,7 +63,8 @@ public class BuildingManager : MonoBehaviour
         newObject.layer = LayerMask.NameToLayer("Building");
         placedGameObjects.Add(newObject);
         GridData selectedData = dataBase.buildingData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
-        
+        GetplacedGameObjectsPositions();
+
         selectedData.AddObjectAt(gridPosition,
             dataBase.buildingData[selectedObjectIndex].Size,
             dataBase.buildingData[selectedObjectIndex].ID,
@@ -139,5 +142,20 @@ public class BuildingManager : MonoBehaviour
             preview.UpdatePosition(cellCenterPosition, placementValidity);
             lastDetectedPosition = gridPosition;
         }
+    }
+
+    public List<Vector2> GetplacedGameObjectsPositions()
+    {
+        foreach (var furniture in placedGameObjects)
+        {
+
+            Debug.Log("objetos colocados: " + furniture.transform.position);
+            Debug.Log("la casilla donde se ha puesto la ciudad es: " + grid.WorldToCell(furniture.transform.position));
+            Vector2 posV2 = new Vector2(grid.WorldToCell(furniture.transform.position).x, grid.WorldToCell(furniture.transform.position).y);
+            Debug.Log("la casilla donde se ha puesto la ciudad en vector2 es: " + posV2);
+            placedGameObjectsPositions.Add(posV2);
+        }
+
+        return placedGameObjectsPositions;
     }
 }
