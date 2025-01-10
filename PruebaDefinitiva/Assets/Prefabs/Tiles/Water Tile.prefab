@@ -61,7 +61,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2971652936575947445, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2350236484221898715, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
@@ -87,6 +88,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileRenderer: {fileID: 7417063446574673799}
   highLight: {fileID: 8255085024332235457}
+  numberText: {fileID: 0}
 --- !u!212 &7417063446574673799 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6041841546551355415, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}

@@ -18,11 +18,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2969612625522157233, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.96
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2969612625522157233, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.96
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 27128282855466104, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 634002956970854156, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_Color.a
@@ -127,6 +131,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileRenderer: {fileID: 7310674816633258940}
   highLight: {fileID: 8148696164602457850}
+  numberText: {fileID: 3948588030667083731}
+--- !u!114 &3948588030667083731 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 27128282855466104, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+  m_PrefabInstance: {fileID: 3939614909938150315}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &7310674816633258940 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6041841546551355415, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}

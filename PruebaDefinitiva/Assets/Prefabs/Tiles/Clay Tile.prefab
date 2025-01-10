@@ -10,11 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2969612625522157233, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.96
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2969612625522157233, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.96
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 27128282855466104, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 634002956970854156, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_Color.a
@@ -125,3 +129,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileRenderer: {fileID: 2478933868850810835}
   highLight: {fileID: 3893281371567678101}
+  numberText: {fileID: 0}

@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 27128282855466104, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2350236484221898715, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_Name
       value: Wood Tile
@@ -87,6 +91,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileRenderer: {fileID: 7935585252434265944}
   highLight: {fileID: 8809493053619972638}
+  numberText: {fileID: 4438389077539605303}
+--- !u!114 &4438389077539605303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 27128282855466104, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+  m_PrefabInstance: {fileID: 4465374410841239375}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &7935585252434265944 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6041841546551355415, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}

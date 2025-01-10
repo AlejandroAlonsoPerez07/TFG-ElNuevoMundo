@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 27128282855466104, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 634002956970854156, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -84,6 +88,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7664136148369086878}
   m_SourcePrefab: {fileID: 100100000, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+--- !u!114 &239325135193065273 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 27128282855466104, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+  m_PrefabInstance: {fileID: 230283874816893761}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2571439215204347034 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2350236484221898715, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
@@ -103,6 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileRenderer: {fileID: 5830700364882889558}
   highLight: {fileID: 4939191950666606096}
+  numberText: {fileID: 239325135193065273}
 --- !u!1 &4939191950666606096 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5168348001399571793, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}

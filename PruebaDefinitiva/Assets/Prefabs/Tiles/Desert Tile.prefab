@@ -18,11 +18,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2969612625522157233, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.96
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2969612625522157233, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.96
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2350236484221898715, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
       propertyPath: m_Name
@@ -77,7 +77,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2971652936575947445, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2350236484221898715, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
@@ -113,3 +114,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileRenderer: {fileID: 4301008417279939994}
   highLight: {fileID: 3445543581468195036}
+  numberText: {fileID: 0}
