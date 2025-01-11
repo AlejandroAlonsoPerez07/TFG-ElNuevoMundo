@@ -41,15 +41,17 @@ public class GameManager : MonoBehaviour
                 Debug.Log("entro en el estado generar grid");
                 GridManager.Instance.GenerateGrid();
                 break;
-            case GameState.SpawnHeroes:
+            case GameState.BuildingPhase:
                 Debug.Log("entro en el estado spawn heroes");
                 BuildingManager.Instance.Update();
                 break;
-            case GameState.SpawnEnemies:
+            case GameState.FirstTurn:
+                Debug.Log("Estado de primer turno");
+                BuildingManager.Instance.Update();
                 break;
-            case GameState.HeroesTurn:
+            case GameState.DiceRoll:
                 break;
-            case GameState.EnemiesTurn:
+            case GameState.EndTurn:
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -63,9 +65,9 @@ public class GameManager : MonoBehaviour
     {
         CreatingGame = 0,
         GenerateGrid = 1,
-        SpawnHeroes = 2,
-        SpawnEnemies = 3,
-        HeroesTurn = 4,
-        EnemiesTurn = 5
+        FirstTurn = 2,
+        DiceRoll = 3,
+        BuildingPhase = 4,
+        EndTurn = 5
     }
 }

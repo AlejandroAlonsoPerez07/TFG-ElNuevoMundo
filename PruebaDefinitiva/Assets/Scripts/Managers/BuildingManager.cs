@@ -32,17 +32,24 @@ public class BuildingManager : MonoBehaviour
 
     public void StartPlacement(int ID)
     {
-        StopPlacement();
-        selectedObjectIndex = dataBase.buildingData.FindIndex(data => data.ID == ID);
-        if (selectedObjectIndex < 0)
+        if (GameManager.Instance.State == GameManager.GameState.FirstTurn)
         {
-            Debug.LogError($"No ID found {ID}");
-            return;
+
         }
-        preview.StartShowingPlacementPreview(dataBase.buildingData[selectedObjectIndex].prefab,
-            dataBase.buildingData[selectedObjectIndex].Size);
-        inputManager.OnClicked += PlaceStructure;
-        inputManager.OnExit += StopPlacement;
+        else
+        {
+            StopPlacement();
+            selectedObjectIndex = dataBase.buildingData.FindIndex(data => data.ID == ID);
+            if (selectedObjectIndex < 0)
+            {
+                Debug.LogError($"No ID found {ID}");
+                return;
+            }
+            preview.StartShowingPlacementPreview(dataBase.buildingData[selectedObjectIndex].prefab,
+                dataBase.buildingData[selectedObjectIndex].Size);
+            inputManager.OnClicked += PlaceStructure;
+            inputManager.OnExit += StopPlacement;
+        }
     }
 
     private void PlaceStructure()
@@ -153,5 +160,10 @@ public class BuildingManager : MonoBehaviour
         }
 
         return placedGameObjectsPositions;
+    }
+
+    public void FirstTurn()
+    {
+
     }
 }
