@@ -8,6 +8,7 @@ public class Tile : MonoBehaviour
     [SerializeField] protected SpriteRenderer tileRenderer; // Sigue siendo privada, pero las clases hijas pueden acceder a ella
     [SerializeField] private GameObject highLight;
     [SerializeField] protected TMP_Text numberText; // Referencia al Text para mostrar el número
+    
     public int randomNumber;
 
     public virtual void Init(int x, int y)
@@ -43,11 +44,9 @@ public class Tile : MonoBehaviour
     }
     private void UpdateTileNumber()
     {
-        Debug.Log("entro en UpdateTileNumber");
         if (numberText != null)
         {
             numberText.text = randomNumber.ToString(); // Asigna el número generado al Text
-            Debug.Log("mi numero es: " + numberText.text);
         }
     }
 

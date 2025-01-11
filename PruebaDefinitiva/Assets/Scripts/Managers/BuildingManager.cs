@@ -148,11 +148,7 @@ public class BuildingManager : MonoBehaviour
     {
         foreach (var furniture in placedGameObjects)
         {
-
-            Debug.Log("objetos colocados: " + furniture.transform.position);
-            Debug.Log("la casilla donde se ha puesto la ciudad es: " + grid.WorldToCell(furniture.transform.position));
             Vector2 posV2 = new Vector2(grid.WorldToCell(furniture.transform.position).x, grid.WorldToCell(furniture.transform.position).y);
-            Debug.Log("la casilla donde se ha puesto la ciudad en vector2 es: " + posV2);
             placedGameObjectsPositions.Add(posV2);
         }
 

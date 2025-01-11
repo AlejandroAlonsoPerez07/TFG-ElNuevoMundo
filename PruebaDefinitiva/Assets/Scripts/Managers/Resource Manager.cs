@@ -2,34 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager Instance;
-    private int randomNumber;
-    public Dictionary<Vector2, Tile> tilesWithSettlementsAndAdjacents = new Dictionary<Vector2, Tile>();
-    List<Tile> adjacentTiles = new List<Tile>();
-
+    
     [SerializeField] private GridManager gridManager;
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private BuildingManager buildingManager;
 
-    [SerializeField] public TMP_Text clayText;
-    [SerializeField] public TMP_Text mountainText;
-    [SerializeField] public TMP_Text wheatText;
-    [SerializeField] public TMP_Text ironText;
-    [SerializeField] public TMP_Text woolText;
-    [SerializeField] public TMP_Text woodText;
+    [SerializeField] private TMP_Text clayText;
+    [SerializeField] private TMP_Text mountainText;
+    [SerializeField] private TMP_Text wheatText;
+    [SerializeField] private TMP_Text ironText;
+    [SerializeField] private TMP_Text woolText;
+    [SerializeField] private TMP_Text woodText;
+
+    private int randomNumber;
+    public Dictionary<Vector2, Tile> tilesWithSettlementsAndAdjacents = new();
+    List<Tile> adjacentTiles = new();
 
     void Awake()
     {
         Instance = this;
     }
 
-    private void Start()
-    {
-
-    }
     public void GenerateRandomNumber()
     {
         // Elegir aleatoriamente entre los dos rangos
@@ -41,16 +39,17 @@ public class ResourceManager : MonoBehaviour
         {
             randomNumber = Random.Range(8, 13); // Rango 8-12
         }
-        Debug.Log("El numero aleatorio es: " + randomNumber);
-        //Vector2 prueba = new Vector2(1,1);
-        //Debug.Log("Diccionario: " + gridManager.tiles.ContainsKey(prueba));
-        foreach (var entry in gridManager.tiles)
+        // ***********************************************************************************************************************
+        // TODO: CAMBIAR LA FORMA DE LLAMAR Y GESTIONAR LOS RECURSOS, NO PUEDE HACERLO UNA FUNCION QUE GENERA UN NUMERO ALEATORIO
+        UpdateResourceCount();
+    }
+
+    List<Tile> GetAdjacentsTiles()
+    {
+        foreach (var pos in playerManager.GetSettlementsPositions())
         {
-            Vector2 key = entry.Key;
-            Tile tile = entry.Value;
-            if(playerManager.GetSettlementsPositions().Contains(key))
+            if (gridManager.tiles.ContainsKey(pos))
             {
-                Debug.Log($"Clave: {key}, Tile: {tile.name}");
                 // Obtener las posiciones adyacentes (incluyendo la actual)
                 Vector2[] directions = new Vector2[]
                 {
@@ -67,56 +66,49 @@ public class ResourceManager : MonoBehaviour
 
                 foreach (Vector2 direction in directions)
                 {
-                    Vector2 adjacentKey = key + direction;
+                    Vector2 adjacentKey = pos + direction;
 
                     // Verificar si la posición adyacente existe en el diccionario
                     if (gridManager.tiles.ContainsKey(adjacentKey))
                     {
                         adjacentTiles.Add(gridManager.tiles[adjacentKey]);
-                        Debug.Log($"Casilla adyacente: {adjacentKey}, Tile: {gridManager.tiles[adjacentKey].name}");
                     }
                 }
-
-                // Aquí puedes usar la lista `adjacentTiles` como desees
-                Debug.Log($"Total de casillas adyacentes (incluyendo la actual): {adjacentTiles.Count}");
             }
         }
+        return adjacentTiles;
+    }
 
-
-        foreach (var entry in adjacentTiles)
+    void UpdateResourceCount()
+    {
+        foreach (var entry in GetAdjacentsTiles())
         {
-            if(randomNumber == entry.randomNumber)
+            if (randomNumber == entry.randomNumber)
             {
                 string type = entry.GetType().Name;
                 switch (type)
                 {
                     case "ClayTile":
-                        Debug.Log("El tile es de tipo: ClayTile");
                         UpdateResourceCountClay();
                         break;
 
                     case "MountainTile":
-                        Debug.Log("El tile es de tipo: MountainTile");
                         UpdateResourceCountMountain();
                         break;
 
                     case "WheatTile":
-                        Debug.Log("El tile es de tipo: WheatTile");
                         UpdateResourceCountWheat();
                         break;
 
                     case "IronTile":
-                        Debug.Log("El tile es de tipo: IronTile");
                         UpdateResourceCountIron();
                         break;
 
                     case "WoolTile":
-                        Debug.Log("El tile es de tipo: WoolTile");
                         UpdateResourceCountWool();
                         break;
 
                     case "WoodTile":
-                        Debug.Log("El tile es de tipo: WoodTile");
                         UpdateResourceCountWood();
                         break;
 
