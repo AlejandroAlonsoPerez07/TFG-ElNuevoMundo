@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 
 public class BuildingManager : MonoBehaviour
@@ -18,6 +20,16 @@ public class BuildingManager : MonoBehaviour
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
     public List<Vector2> placedGameObjectsPositions = new();
 
+    // Gestion de recursos
+    [SerializeField] private TMP_Text clayText;
+    [SerializeField] private TMP_Text ironText;
+    [SerializeField] private TMP_Text mountainText;
+    [SerializeField] private TMP_Text wheatText;
+    [SerializeField] private TMP_Text woodText;
+    [SerializeField] private TMP_Text woolText;
+
+    [SerializeField] private Button railButton, villageButton, cityButton;
+
     void Awake()
     {
         Instance = this;
@@ -27,29 +39,23 @@ public class BuildingManager : MonoBehaviour
         StopPlacement();
         floorData = new GridData();
         furnitureData = new GridData();
-        
+        //CheckResourcesAmount();
     }
 
     public void StartPlacement(int ID)
     {
-        if (GameManager.Instance.State == GameManager.GameState.FirstTurn)
+        StopPlacement();
+        selectedObjectIndex = dataBase.buildingData.FindIndex(data => data.ID == ID);
+        if (selectedObjectIndex < 0)
         {
+            Debug.LogError($"No ID found {ID}");
+            return;
+        }
+        preview.StartShowingPlacementPreview(dataBase.buildingData[selectedObjectIndex].prefab,
+            dataBase.buildingData[selectedObjectIndex].Size);
+        inputManager.OnClicked += PlaceStructure;
+        inputManager.OnExit += StopPlacement;
 
-        }
-        else
-        {
-            StopPlacement();
-            selectedObjectIndex = dataBase.buildingData.FindIndex(data => data.ID == ID);
-            if (selectedObjectIndex < 0)
-            {
-                Debug.LogError($"No ID found {ID}");
-                return;
-            }
-            preview.StartShowingPlacementPreview(dataBase.buildingData[selectedObjectIndex].prefab,
-                dataBase.buildingData[selectedObjectIndex].Size);
-            inputManager.OnClicked += PlaceStructure;
-            inputManager.OnExit += StopPlacement;
-        }
     }
 
     private void PlaceStructure()
@@ -63,7 +69,7 @@ public class BuildingManager : MonoBehaviour
         bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
         if (placementValidity == false)
             return;
-
+        //CheckResourcesAmount();
         GameObject newObject = Instantiate(dataBase.buildingData[selectedObjectIndex].prefab);
         Vector3 cellCenterPosition = grid.GetCellCenterWorld(gridPosition); // obtenemos el centro de la casilla correspondiente a sus coordenadas del mundo
         newObject.transform.position = cellCenterPosition;
@@ -77,6 +83,7 @@ public class BuildingManager : MonoBehaviour
             dataBase.buildingData[selectedObjectIndex].ID,
             placedGameObjects.Count - 1);
         preview.UpdatePosition(cellCenterPosition, false);
+        UseResourcesToBuild(dataBase.buildingData[selectedObjectIndex].ID);
     }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
@@ -135,6 +142,7 @@ public class BuildingManager : MonoBehaviour
         if (selectedObjectIndex < 0)
             return;
 
+        CheckResourcesAmount();
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         mouseIndicator.transform.position = mousePosition;
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
@@ -165,5 +173,114 @@ public class BuildingManager : MonoBehaviour
     public void FirstTurn()
     {
 
+    }
+
+    // Funciones de actualización
+    void UpdateResourceCountClay(int ID)
+    {
+        int cost = ID == 2 ? 2 : 1;
+        int currentCount = int.Parse(clayText.text);
+        clayText.text = (currentCount - cost).ToString();
+    }
+
+    void UpdateResourceCountMountain(int ID)
+    {
+        int cost = ID == 2 ? 2 : 1;
+        int currentCount = int.Parse(mountainText.text);
+        mountainText.text = (currentCount - cost).ToString();
+    }
+
+    void UpdateResourceCountWheat(int ID)
+    {
+        int cost = ID == 2 ? 2 : 1;
+        int currentCount = int.Parse(wheatText.text);
+        wheatText.text = (currentCount - cost).ToString();
+    }
+
+    void UpdateResourceCountIron(int ID)
+    {
+        int cost = ID == 2 ? 2 : 1;
+        int currentCount = int.Parse(ironText.text);
+        ironText.text = (currentCount - cost).ToString();
+    }
+
+    void UpdateResourceCountWool(int ID)
+    {
+        int cost = ID == 2 ? 2 : 1;
+        int currentCount = int.Parse(woolText.text);
+        woolText.text = (currentCount - cost).ToString();
+    }
+
+    void UpdateResourceCountWood(int ID)
+    {
+        int cost = ID == 2 ? 2 : 1;
+        int currentCount = int.Parse(woodText.text);
+        woodText.text = (currentCount - cost).ToString();
+    }
+
+    public void UseResourcesToBuild(int ID)
+    {
+        switch (ID) 
+        {
+            case 0:
+                UpdateResourceCountMountain(0);
+                UpdateResourceCountIron(0);
+            break;
+            case 1:
+                UpdateResourceCountClay(1);
+                UpdateResourceCountWheat(1);
+                UpdateResourceCountWood(1);
+                UpdateResourceCountWool(1);
+            break;
+            case 2:
+                UpdateResourceCountClay(2);
+                UpdateResourceCountMountain(2);
+                UpdateResourceCountIron(2);
+                UpdateResourceCountWheat(2);
+                UpdateResourceCountWood(2);
+                UpdateResourceCountWool(2);
+            break;
+
+        }
+    }
+
+    private void CheckResourcesAmount()
+    {
+        int currentClayCount = int.Parse(clayText.text);
+        int currentIronCount = int.Parse(ironText.text);
+        int currentStoneCount = int.Parse(mountainText.text);
+        int currentWheatCount = int.Parse(wheatText.text);
+        int currentWoodCount = int.Parse(woodText.text);
+        int currentWoolCount = int.Parse(woolText.text);
+
+        if (currentIronCount > 0 && currentStoneCount > 0)
+        {
+            railButton.enabled = true;
+
+        }
+        else
+        {
+            railButton.enabled = false;
+        }
+
+        if (currentClayCount > 0 && currentWheatCount > 0 && currentWoodCount > 0 && currentWoolCount > 0)
+        {
+            Debug.Log("hay recursos pueblo");
+            villageButton.enabled = true;
+        }
+        else
+        {
+            villageButton.enabled = false;
+        }
+
+        if (currentClayCount > 1 && currentWheatCount > 1 && currentWoodCount > 1 && currentWoolCount > 1 && currentIronCount > 1 && currentStoneCount > 1) 
+        {
+            cityButton.enabled = true;
+        }
+        else
+        {
+            cityButton.enabled = false;
+        }
+        
     }
 }
