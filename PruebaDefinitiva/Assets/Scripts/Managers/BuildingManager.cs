@@ -20,6 +20,8 @@ public class BuildingManager : MonoBehaviour
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
     public List<Vector2> placedGameObjectsPositions = new();
 
+    private int placedObjectsCount;
+
     // Gestion de recursos
     [SerializeField] private TMP_Text clayText;
     [SerializeField] private TMP_Text ironText;
@@ -28,7 +30,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private TMP_Text woodText;
     [SerializeField] private TMP_Text woolText;
 
-    [SerializeField] private Button railButton, villageButton, cityButton;
+    [SerializeField] private Button railButton, villageButton, cityButton, diceRollButton, passTurnButton;
 
     void Awake()
     {
@@ -39,9 +41,23 @@ public class BuildingManager : MonoBehaviour
         StopPlacement();
         floorData = new GridData();
         furnitureData = new GridData();
-        //CheckResourcesAmount();
+        CheckResourcesAmount();
     }
-
+    private void FixedUpdate()
+    {
+        CheckResourcesAmount();
+        if (GameManager.Instance.State == GameManager.GameState.FirstTurn) 
+        {
+            Debug.Log("Estoy actualizando en el primer turno");
+            if (placedObjectsCount == 2)
+            {
+                passTurnButton.enabled = true;
+                Debug.Log("Se han añadido dos estructuras");
+                GameManager.Instance.UpdateGameState(GameManager.GameState.EndTurn);
+                return;
+            }
+        }
+    }
     public void StartPlacement(int ID)
     {
         StopPlacement();
@@ -84,6 +100,7 @@ public class BuildingManager : MonoBehaviour
             placedGameObjects.Count - 1);
         preview.UpdatePosition(cellCenterPosition, false);
         UseResourcesToBuild(dataBase.buildingData[selectedObjectIndex].ID);
+        StopPlacement();
     }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
@@ -164,15 +181,27 @@ public class BuildingManager : MonoBehaviour
         foreach (var furniture in placedGameObjects)
         {
             Vector2 posV2 = new Vector2(grid.WorldToCell(furniture.transform.position).x, grid.WorldToCell(furniture.transform.position).y);
-            placedGameObjectsPositions.Add(posV2);
+            if(furniture.CompareTag("Rail"))
+            {
+                placedObjectsCount++;
+            }
+            else
+            {
+                if (!placedGameObjectsPositions.Contains(posV2))
+                {
+                    placedObjectsCount++;
+                    placedGameObjectsPositions.Add(posV2);
+                }
+            }
         }
-
+        Debug.Log("contador de edificios puesto: " + placedGameObjectsPositions.Count);
         return placedGameObjectsPositions;
     }
 
     public void FirstTurn()
     {
-
+        //Update();
+        //GameManager.Instance.UpdateGameState(GameManager.GameState.BuildingPhase);
     }
 
     // Funciones de actualización
@@ -255,6 +284,7 @@ public class BuildingManager : MonoBehaviour
 
         if (currentIronCount > 0 && currentStoneCount > 0)
         {
+            Debug.Log("hay recursos rail");
             railButton.enabled = true;
 
         }
