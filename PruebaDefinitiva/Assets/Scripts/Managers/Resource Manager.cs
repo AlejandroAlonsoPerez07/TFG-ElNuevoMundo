@@ -28,6 +28,14 @@ public class ResourceManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        if(GameManager.Instance.State == GameManager.GameState.BuildingPhase)
+        {
+            CleanAllLists();
+            return;
+        }
+    }
     public void GenerateRandomNumber()
     {
         // Elegir aleatoriamente entre los dos rangos
@@ -39,9 +47,8 @@ public class ResourceManager : MonoBehaviour
         {
             randomNumber = Random.Range(8, 13); // Rango 8-12
         }
-        // ***********************************************************************************************************************
-        // TODO: CAMBIAR LA FORMA DE LLAMAR Y GESTIONAR LOS RECURSOS, NO PUEDE HACERLO UNA FUNCION QUE GENERA UN NUMERO ALEATORIO
         UpdateResourceCount();
+        GameManager.Instance.UpdateGameState(GameManager.GameState.BuildingPhase);
     }
 
     List<Tile> GetAdjacentsTiles()
@@ -90,34 +97,42 @@ public class ResourceManager : MonoBehaviour
                 {
                     case "ClayTile":
                         UpdateResourceCountClay();
-                        break;
+                    break;
 
                     case "MountainTile":
                         UpdateResourceCountMountain();
-                        break;
+                    break;
 
                     case "WheatTile":
                         UpdateResourceCountWheat();
-                        break;
+                    break;
 
                     case "IronTile":
                         UpdateResourceCountIron();
-                        break;
+                    break;
 
                     case "WoolTile":
                         UpdateResourceCountWool();
-                        break;
+                    break;
 
                     case "WoodTile":
                         UpdateResourceCountWood();
-                        break;
+                    break;
 
                     default:
                         Debug.Log("El tipo del tile no coincide con ninguno de los casos definidos.");
-                        break;
+                    break;
                 }
             }
         }
+    }
+
+    void CleanAllLists()
+    {
+        tilesWithSettlementsAndAdjacents.Clear();
+        adjacentTiles.Clear();
+
+        Debug.Log("cuantas cosas hay: " + tilesWithSettlementsAndAdjacents.Count);
     }
     // Funciones de actualización
     void UpdateResourceCountClay()

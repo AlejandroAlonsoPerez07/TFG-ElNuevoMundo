@@ -42,16 +42,23 @@ public class GameManager : MonoBehaviour
                 GridManager.Instance.GenerateGrid();
                 break;
             case GameState.BuildingPhase:
-                Debug.Log("entro en el estado spawn heroes");
+                Debug.Log("entro en el estado construyendo");
+                PlayerManager.Instance.ActivePassTurnButton();
+                PlayerManager.Instance.DeactiveDiceRollButton();
                 BuildingManager.Instance.Update();
                 break;
             case GameState.FirstTurn:
                 Debug.Log("Estado de primer turno");
-                BuildingManager.Instance.Update();
+                PlayerManager.Instance.DeactiveDiceRollButton();
+                BuildingManager.Instance.FirstTurn();
                 break;
             case GameState.DiceRoll:
+                Debug.Log("Estado de tirando dados");
+                PlayerManager.Instance.ActiveDiceRollButton();
+                PlayerManager.Instance.DeactivateButtonsOnDiceRollState();
                 break;
             case GameState.EndTurn:
+                Debug.Log("Estado de finalizar turno");
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
