@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     public static event Action<GameState> ChangeState;
     public int size;
+
+    [SerializeField] private TMP_Text displayGameState;
 
     private void Awake()
     {
@@ -33,6 +37,12 @@ public class GameManager : MonoBehaviour
     public void UpdateGameState(GameState newState)
     {
         State = newState;
+        if(displayGameState == null)
+        {
+            GameObject targetObject = GameObject.FindGameObjectWithTag("DisplayGameState");
+            displayGameState = targetObject.GetComponent<TMP_Text>();
+        }
+        displayGameState.text = newState.ToString();
         switch (newState)
         {
             case GameState.CreatingGame:
@@ -45,6 +55,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("entro en el estado construyendo");
                 PlayerManager.Instance.ActivePassTurnButton();
                 PlayerManager.Instance.DeactiveDiceRollButton();
+                
                 BuildingManager.Instance.Update();
                 break;
             case GameState.FirstTurn:
@@ -54,6 +65,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.DiceRoll:
                 Debug.Log("Estado de tirando dados");
+                PlayerManager.Instance.CleanResourcesObtained();
                 PlayerManager.Instance.ActiveDiceRollButton();
                 PlayerManager.Instance.DeactivateButtonsOnDiceRollState();
                 break;

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
@@ -10,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager Instance;
     public List<Vector2> settlementsPositions;
     [SerializeField] private Button railButton, villageButton, cityButton, diceRollButton, passTurnButton;
+    [SerializeField] private TMP_Text clayObtainedText, mountainObtainedText, wheatObtainedText, ironObtainedText, woolObtainedText, woodObtainedText;
 
     void Awake()
     {
@@ -55,5 +58,20 @@ public class PlayerManager : MonoBehaviour
         villageButton.enabled = false;
         cityButton.enabled = false;
         passTurnButton.enabled = false;
+    }
+
+    public void CleanResourcesObtained()
+    {
+        clayObtainedText.text = "+ 0";
+        mountainObtainedText.text = "+ 0";
+        wheatObtainedText.text = "+ 0";
+        ironObtainedText.text = "+ 0";
+        woolObtainedText.text = "+ 0";
+        woodObtainedText.text = "+ 0";
+    }
+
+    public void Back()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 }

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: BuildingsDatabase
   m_EditorClassIdentifier: 
   buildingData:
-  - <Name>k__BackingField: Floor
+  - <Name>k__BackingField: Rail
     <ID>k__BackingField: 0
     <Size>k__BackingField: {x: 1, y: 1}
     <ResourcesCost>k__BackingField: 0100000001000000
-    <prefab>k__BackingField: {fileID: 1504196121286777116, guid: 1da2bdc19f99fba44a9e19c2371eae08, type: 3}
+    <prefab>k__BackingField: {fileID: 4247622355364952009, guid: 9e30f56ce68832e4cb8b72c8431c07e9, type: 3}
   - <Name>k__BackingField: Village
     <ID>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
