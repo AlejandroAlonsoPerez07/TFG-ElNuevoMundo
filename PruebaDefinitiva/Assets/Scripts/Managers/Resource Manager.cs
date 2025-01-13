@@ -113,37 +113,31 @@ public class ResourceManager : MonoBehaviour
                     case "ClayTile":
                         clayCount++;
                         UpdateResourceCountClay(clayCount);
-                        clayCount = 0;
                     break;
 
                     case "MountainTile":
                         stoneCount++;
                         UpdateResourceCountMountain(stoneCount);
-                        stoneCount = 0;
                     break;
 
                     case "WheatTile":
                         wheatCount++;
                         UpdateResourceCountWheat(wheatCount);
-                        wheatCount = 0;
                     break;
 
                     case "IronTile":
                         ironCount++;
                         UpdateResourceCountIron(ironCount);
-                        ironCount = 0;
                     break;
 
                     case "WoolTile":
                         woolCount++;
                         UpdateResourceCountWool(woolCount);
-                        woolCount = 0;
                     break;
 
                     case "WoodTile":
                         woodCount++;
                         UpdateResourceCountWood(woodCount);
-                        woodCount = 0;
                     break;
 
                     default:
@@ -158,8 +152,6 @@ public class ResourceManager : MonoBehaviour
     {
         tilesWithSettlementsAndAdjacents.Clear();
         adjacentTiles.Clear();
-
-        Debug.Log("cuantas cosas hay: " + tilesWithSettlementsAndAdjacents.Count);
     }
     // Funciones de actualización
     void UpdateResourceCountClay(int count)
