@@ -18,6 +18,13 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private TMP_Text ironText;
     [SerializeField] private TMP_Text woolText;
     [SerializeField] private TMP_Text woodText;
+    [SerializeField] private TMP_Text displayDiceRoll;
+    [SerializeField] private TMP_Text clayObtainedText;
+    [SerializeField] private TMP_Text mountainObtainedText;
+    [SerializeField] private TMP_Text wheatObtainedText;
+    [SerializeField] private TMP_Text ironObtainedText;
+    [SerializeField] private TMP_Text woolObtainedText;
+    [SerializeField] private TMP_Text woodObtainedText;
 
     private int randomNumber;
     public Dictionary<Vector2, Tile> tilesWithSettlementsAndAdjacents = new();
@@ -47,6 +54,7 @@ public class ResourceManager : MonoBehaviour
         {
             randomNumber = Random.Range(8, 13); // Rango 8-12
         }
+        displayDiceRoll.text = randomNumber.ToString();
         UpdateResourceCount();
         GameManager.Instance.UpdateGameState(GameManager.GameState.BuildingPhase);
     }
@@ -88,6 +96,13 @@ public class ResourceManager : MonoBehaviour
 
     void UpdateResourceCount()
     {
+        int clayCount = 0;
+        int ironCount = 0;
+        int stoneCount = 0;
+        int wheatCount = 0;
+        int woodCount = 0;
+        int woolCount = 0;
+
         foreach (var entry in GetAdjacentsTiles())
         {
             if (randomNumber == entry.randomNumber)
@@ -96,27 +111,39 @@ public class ResourceManager : MonoBehaviour
                 switch (type)
                 {
                     case "ClayTile":
-                        UpdateResourceCountClay();
+                        clayCount++;
+                        UpdateResourceCountClay(clayCount);
+                        clayCount = 0;
                     break;
 
                     case "MountainTile":
-                        UpdateResourceCountMountain();
+                        stoneCount++;
+                        UpdateResourceCountMountain(stoneCount);
+                        stoneCount = 0;
                     break;
 
                     case "WheatTile":
-                        UpdateResourceCountWheat();
+                        wheatCount++;
+                        UpdateResourceCountWheat(wheatCount);
+                        wheatCount = 0;
                     break;
 
                     case "IronTile":
-                        UpdateResourceCountIron();
+                        ironCount++;
+                        UpdateResourceCountIron(ironCount);
+                        ironCount = 0;
                     break;
 
                     case "WoolTile":
-                        UpdateResourceCountWool();
+                        woolCount++;
+                        UpdateResourceCountWool(woolCount);
+                        woolCount = 0;
                     break;
 
                     case "WoodTile":
-                        UpdateResourceCountWood();
+                        woodCount++;
+                        UpdateResourceCountWood(woodCount);
+                        woodCount = 0;
                     break;
 
                     default:
@@ -135,39 +162,45 @@ public class ResourceManager : MonoBehaviour
         Debug.Log("cuantas cosas hay: " + tilesWithSettlementsAndAdjacents.Count);
     }
     // Funciones de actualización
-    void UpdateResourceCountClay()
+    void UpdateResourceCountClay(int count)
     {
         int currentCount = int.Parse(clayText.text);
         clayText.text = (currentCount + 1).ToString();
+        clayObtainedText.text = "+ " + count.ToString();
     }
 
-    void UpdateResourceCountMountain()
+    void UpdateResourceCountMountain(int count)
     {
         int currentCount = int.Parse(mountainText.text);
         mountainText.text = (currentCount + 1).ToString();
+        mountainObtainedText.text = "+ " + count.ToString();
     }
 
-    void UpdateResourceCountWheat()
+    void UpdateResourceCountWheat(int count)
     {
         int currentCount = int.Parse(wheatText.text);
         wheatText.text = (currentCount + 1).ToString();
+        wheatObtainedText.text = "+ " + count.ToString();
     }
 
-    void UpdateResourceCountIron()
+    void UpdateResourceCountIron(int count)
     {
         int currentCount = int.Parse(ironText.text);
         ironText.text = (currentCount + 1).ToString();
+        ironObtainedText.text = "+ " + count.ToString();
     }
 
-    void UpdateResourceCountWool()
+    void UpdateResourceCountWool(int count)
     {
         int currentCount = int.Parse(woolText.text);
         woolText.text = (currentCount + 1).ToString();
+        woolObtainedText.text = "+ " + count.ToString();
     }
 
-    void UpdateResourceCountWood()
+    void UpdateResourceCountWood(int count)
     {
         int currentCount = int.Parse(woodText.text);
         woodText.text = (currentCount + 1).ToString();
+        woodObtainedText.text = "+ " + count.ToString();
     }
 }
