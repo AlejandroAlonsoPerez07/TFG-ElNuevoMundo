@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
 
     public void PassTurn()
     {
-        GameManager.Instance.UpdateGameState(GameManager.GameState.DiceRoll);
+        GameManager.Instance.UpdateGameState(GameManager.GameState.PlayerTurn);
     }
 
     public void ActiveDiceRollButton()
