@@ -30,4 +30,8 @@ public class BuildingData
     public float actionRadius { get; private set; }
     [field: SerializeField]*/
     public GameObject prefab { get; private set; }
+
+    [field: SerializeField]
+    public int Points { get; private set; }
+    
 }

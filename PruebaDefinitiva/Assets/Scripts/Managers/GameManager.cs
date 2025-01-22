@@ -64,8 +64,9 @@ public class GameManager : MonoBehaviour
                 Debug.Log("entro en el estado construyendo");
                 PlayerManager.Instance.ActivePassTurnButton();
                 PlayerManager.Instance.DeactiveDiceRollButton();
-                
+                BuildingManager.Instance.UpdateCurrentPlayer(currentPlayer);
                 BuildingManager.Instance.Update();
+                PlayerManager.Instance.CheckVictory(currentPlayer);
                 break;
             case GameState.PlayerTurn:
                 if(currentPlayer >= numberOfPlayers)
@@ -99,11 +100,16 @@ public class GameManager : MonoBehaviour
             case GameState.DiceRoll:
                 Debug.Log("Estado de tirando dados");
                 PlayerManager.Instance.CleanResourcesObtained();
+                ResourceManager.Instance.LoadResourcesOnInterface(currentPlayer);
                 PlayerManager.Instance.ActiveDiceRollButton();
                 PlayerManager.Instance.DeactivateButtonsOnDiceRollState();
                 break;
             case GameState.EndTurn:
                 Debug.Log("Estado de finalizar turno");
+                PlayerManager.Instance.CheckVictory(currentPlayer);
+                break;
+            case GameState.Victory:
+                Debug.Log("Estado de VICTORIA del jugador: " + currentPlayer);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -121,6 +127,7 @@ public class GameManager : MonoBehaviour
         DiceRoll = 3,
         BuildingPhase = 4,
         EndTurn = 5,
-        PlayerTurn = 6
+        PlayerTurn = 6,
+        Victory = 7
     }
 }

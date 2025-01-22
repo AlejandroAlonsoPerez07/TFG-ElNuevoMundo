@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameManager gameManager;
 
     public static PlayerManager Instance;
-    [SerializeField] private Button railButton, villageButton, cityButton, diceRollButton, passTurnButton;
+    [SerializeField] private Button railButton, villageButton, cityButton, diceRollButton, passTurnButton, victoryButton;
     [SerializeField] private TMP_Text clayObtainedText, mountainObtainedText, wheatObtainedText, ironObtainedText, woolObtainedText, woodObtainedText;
 
     [SerializeField] private BasePlayer newPlayerPrefab;
@@ -46,6 +46,7 @@ public class PlayerManager : MonoBehaviour
 
     public void ActiveDiceRollButton()
     {
+        Debug.Log("activo el boton de tirar dados");
         diceRollButton.enabled = true;
     }
 
@@ -79,7 +80,11 @@ public class PlayerManager : MonoBehaviour
 
     public void Back()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+                Application.Quit();
+        #endif
     }
 
     public void NewPlayer(int index)
@@ -88,5 +93,21 @@ public class PlayerManager : MonoBehaviour
         playerList.Add(newPlayer);
         playerIndex = index - 1;
         Debug.Log("El indice del jugador actual en NewPlayer: " + playerIndex);
+    }
+
+    public void CheckVictory(int index)
+    {
+        playerIndex = index - 1;
+        Debug.Log("playerIndex en checkVictory: " + playerIndex);
+        if (playerList[playerIndex].totalPoints >= 2)
+        {
+            PopUpVictory();
+            GameManager.Instance.UpdateGameState(GameManager.GameState.Victory);
+        }
+    }
+
+    public void PopUpVictory()
+    {
+        victoryButton.gameObject.SetActive(true);
     }
 }

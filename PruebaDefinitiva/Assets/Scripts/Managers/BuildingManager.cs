@@ -199,6 +199,7 @@ public class BuildingManager : MonoBehaviour
                     placedObjectsCount++;
                     allPlacedBuildingsPositions.Add(posV2);
                     playerManager.playerList[playerIndex].settlementsPositions.Add(posV2);
+                    playerManager.playerList[playerIndex].totalPoints += dataBase.buildingData[selectedObjectIndex].Points;
                 }
             }
         }
@@ -211,6 +212,12 @@ public class BuildingManager : MonoBehaviour
     public void FirstTurn(int index)
     {
         playerIndex = index - 1;
+        clayText.text = playerManager.playerList[playerIndex].resources[0].ToString();
+        ironText.text = playerManager.playerList[playerIndex].resources[1].ToString();
+        mountainText.text = playerManager.playerList[playerIndex].resources[3].ToString();
+        wheatText.text = playerManager.playerList[playerIndex].resources[2].ToString();
+        woodText.text = playerManager.playerList[playerIndex].resources[4].ToString();
+        woolText.text = playerManager.playerList[playerIndex].resources[5].ToString();
     }
 
     // Funciones de actualización
@@ -291,14 +298,7 @@ public class BuildingManager : MonoBehaviour
 
     private void CheckResourcesAmount()
     {
-        /*
-        int currentClayCount = int.Parse(clayText.text);
-        int currentIronCount = int.Parse(ironText.text);
-        int currentStoneCount = int.Parse(mountainText.text);
-        int currentWheatCount = int.Parse(wheatText.text);
-        int currentWoodCount = int.Parse(woodText.text);
-        int currentWoolCount = int.Parse(woolText.text);
-        */
+        Debug.Log("mi indice es: " + playerIndex);
         int currentClayCount = playerManager.playerList[playerIndex].resources[0];
         int currentIronCount = playerManager.playerList[playerIndex].resources[1];
         int currentStoneCount = playerManager.playerList[playerIndex].resources[2];
@@ -335,6 +335,10 @@ public class BuildingManager : MonoBehaviour
         {
             cityButton.enabled = false;
         }
-        
+    }
+
+    public void UpdateCurrentPlayer(int index)
+    {
+        playerIndex = index - 1;
     }
 }
