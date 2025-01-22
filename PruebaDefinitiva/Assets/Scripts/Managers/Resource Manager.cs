@@ -11,6 +11,7 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private BuildingManager buildingManager;
+    [SerializeField] private GameManager gameManager;
 
     [SerializeField] private TMP_Text clayText;
     [SerializeField] private TMP_Text mountainText;
@@ -26,7 +27,7 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private TMP_Text woolObtainedText;
     [SerializeField] private TMP_Text woodObtainedText;
 
-    private int randomNumber;
+    private int randomNumber, playerIndex;
     public Dictionary<Vector2, Tile> tilesWithSettlementsAndAdjacents = new();
     List<Tile> adjacentTiles = new();
 
@@ -55,46 +56,46 @@ public class ResourceManager : MonoBehaviour
             randomNumber = Random.Range(8, 13); // Rango 8-12
         }
         displayDiceRoll.text = randomNumber.ToString();
-        UpdateResourceCount();
+        GetAdjacentsTiles();
         GameManager.Instance.UpdateGameState(GameManager.GameState.BuildingPhase);
     }
 
-    List<Tile> GetAdjacentsTiles()
+    void GetAdjacentsTiles()
     {
-        foreach (var pos in playerManager.GetSettlementsPositions())
+        foreach (var pos in buildingManager.allPlacedBuildingsPositions) // Se recorren todos los edificios sin importar el jugador
         {
-            if (gridManager.tiles.ContainsKey(pos))
+            for(int i = 0; i < playerManager.playerList.Count; i++)
             {
-                // Obtener las posiciones adyacentes (incluyendo la actual)
-                Vector2[] directions = new Vector2[]
+                if (playerManager.playerList[i].settlementsPositions.Contains(pos))
                 {
-                    new Vector2(0, 0),  // Incluir la posición actual
-                    new Vector2(0, 1),  // Arriba
-                    new Vector2(0, -1), // Abajo
-                    new Vector2(1, 0),  // Derecha
-                    new Vector2(-1, 0), // Izquierda
-                    new Vector2(1, 1),  // Diagonal arriba-derecha
-                    new Vector2(1, -1), // Diagonal abajo-derecha
-                    new Vector2(-1, 1), // Diagonal arriba-izquierda
-                    new Vector2(-1, -1) // Diagonal abajo-izquierda
-                };
-
-                foreach (Vector2 direction in directions)
-                {
-                    Vector2 adjacentKey = pos + direction;
-
-                    // Verificar si la posición adyacente existe en el diccionario
-                    if (gridManager.tiles.ContainsKey(adjacentKey))
+                    playerIndex = i;
+                    Debug.Log("playerIndex en resourceManager: " + playerIndex);
+                    if (gridManager.tiles.ContainsKey(pos))
                     {
-                        adjacentTiles.Add(gridManager.tiles[adjacentKey]);
+                        Debug.Log("detecto la casilla con la ciudad en la pos: " + pos);
+                        for(int x = (int)pos.x - 1; x <= pos.x + 1; x++) 
+                        {
+                            for(int z = (int)pos.y - 1; z <= pos.y + 1; z++)
+                            {
+                                Vector2 adjacentTile = new Vector2(x, z);
+                                Debug.Log("Todas las casillas adyacentes: " + adjacentTile);
+                                if (gridManager.tiles[adjacentTile].randomNumber == randomNumber)
+                                {
+                                    Debug.Log("añado la casilla adyacente con el numero que ha salido");
+                                    adjacentTiles.Add(gridManager.tiles[adjacentTile]);
+                                    Debug.Log("casillas con el numero que ha salido: " + adjacentTiles.Count);
+                                }    
+                            }
+                        }
                     }
+                    UpdateResourceCount(adjacentTiles);
+                    adjacentTiles.Clear();
                 }
             }
         }
-        return adjacentTiles;
     }
 
-    void UpdateResourceCount()
+    void UpdateResourceCount(List<Tile> adjacentTiles)
     {
         int clayCount = 0;
         int ironCount = 0;
@@ -102,48 +103,46 @@ public class ResourceManager : MonoBehaviour
         int wheatCount = 0;
         int woodCount = 0;
         int woolCount = 0;
-
-        foreach (var entry in GetAdjacentsTiles())
+        Debug.Log("dentro de updateResourceCount jugador actual: " + playerIndex);
+        Debug.Log("dentro de updateResourceCount casillas con el numero que ha salido: " + adjacentTiles.Count);
+        foreach (var entry in adjacentTiles)
         {
-            if (randomNumber == entry.randomNumber)
+            string type = entry.GetType().Name;
+            switch (type)
             {
-                string type = entry.GetType().Name;
-                switch (type)
-                {
-                    case "ClayTile":
-                        clayCount++;
-                        UpdateResourceCountClay(clayCount);
-                    break;
+                case "ClayTile":
+                    clayCount++;
+                    UpdateResourceCountClay(clayCount, playerIndex);
+                break;
 
-                    case "MountainTile":
-                        stoneCount++;
-                        UpdateResourceCountMountain(stoneCount);
-                    break;
+                case "MountainTile":
+                    stoneCount++;
+                    UpdateResourceCountMountain(stoneCount, playerIndex);
+                break;
 
-                    case "WheatTile":
-                        wheatCount++;
-                        UpdateResourceCountWheat(wheatCount);
-                    break;
+                case "WheatTile":
+                    wheatCount++;
+                    UpdateResourceCountWheat(wheatCount, playerIndex);
+                break;
 
-                    case "IronTile":
-                        ironCount++;
-                        UpdateResourceCountIron(ironCount);
-                    break;
+                case "IronTile":
+                    ironCount++;
+                    UpdateResourceCountIron(ironCount, playerIndex);
+                break;
 
-                    case "WoolTile":
-                        woolCount++;
-                        UpdateResourceCountWool(woolCount);
-                    break;
+                case "WoolTile":
+                    woolCount++;
+                    UpdateResourceCountWool(woolCount, playerIndex);
+                break;
 
-                    case "WoodTile":
-                        woodCount++;
-                        UpdateResourceCountWood(woodCount);
-                    break;
+                case "WoodTile":
+                    woodCount++;
+                    UpdateResourceCountWood(woodCount, playerIndex);
+                break;
 
-                    default:
-                        Debug.Log("El tipo del tile no coincide con ninguno de los casos definidos.");
-                    break;
-                }
+                default:
+                    Debug.Log("El tipo del tile no coincide con ninguno de los casos definidos.");
+                break;
             }
         }
     }
@@ -154,45 +153,51 @@ public class ResourceManager : MonoBehaviour
         adjacentTiles.Clear();
     }
     // Funciones de actualización
-    void UpdateResourceCountClay(int count)
+    void UpdateResourceCountClay(int count, int playerIndex)
     {
-        int currentCount = int.Parse(clayText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[0];
         clayText.text = (currentCount + 1).ToString();
         clayObtainedText.text = "+ " + count.ToString();
+        playerManager.playerList[playerIndex].resources[0] += 1;
     }
 
-    void UpdateResourceCountMountain(int count)
+    void UpdateResourceCountMountain(int count, int playerIndex)
     {
-        int currentCount = int.Parse(mountainText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[2];
         mountainText.text = (currentCount + 1).ToString();
         mountainObtainedText.text = "+ " + count.ToString();
+        playerManager.playerList[playerIndex].resources[2] += 1;
     }
 
-    void UpdateResourceCountWheat(int count)
+    void UpdateResourceCountWheat(int count, int playerIndex)
     {
-        int currentCount = int.Parse(wheatText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[3];
         wheatText.text = (currentCount + 1).ToString();
         wheatObtainedText.text = "+ " + count.ToString();
+        playerManager.playerList[playerIndex].resources[3] += 1;
     }
 
-    void UpdateResourceCountIron(int count)
+    void UpdateResourceCountIron(int count, int playerIndex)
     {
-        int currentCount = int.Parse(ironText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[1];
         ironText.text = (currentCount + 1).ToString();
         ironObtainedText.text = "+ " + count.ToString();
+        playerManager.playerList[playerIndex].resources[1] += 1;
     }
 
-    void UpdateResourceCountWool(int count)
+    void UpdateResourceCountWool(int count, int playerIndex)
     {
-        int currentCount = int.Parse(woolText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[5];
         woolText.text = (currentCount + 1).ToString();
         woolObtainedText.text = "+ " + count.ToString();
+        playerManager.playerList[playerIndex].resources[5] += 1;
     }
 
-    void UpdateResourceCountWood(int count)
+    void UpdateResourceCountWood(int count, int playerIndex)
     {
-        int currentCount = int.Parse(woodText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[4];
         woodText.text = (currentCount + 1).ToString();
         woodObtainedText.text = "+ " + count.ToString();
+        playerManager.playerList[playerIndex].resources[4] += 1;
     }
 }

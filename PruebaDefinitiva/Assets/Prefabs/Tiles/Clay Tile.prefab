@@ -129,4 +129,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileRenderer: {fileID: 2478933868850810835}
   highLight: {fileID: 3893281371567678101}
-  numberText: {fileID: 0}
+  numberText: {fileID: 8205135071370085308}
+  randomNumber: 0
+--- !u!114 &8205135071370085308 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 27128282855466104, guid: 5223c584747c5dd4fb36677711049cf3, type: 3}
+  m_PrefabInstance: {fileID: 8196023386077030340}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
