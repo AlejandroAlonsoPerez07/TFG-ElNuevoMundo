@@ -66,7 +66,8 @@ public class GridManager : MonoBehaviour
         gridVisualization.transform.position = new Vector3((float)(width - 1) * 2, (float)0.25, (height - 1) * 2);
         gridVisualization.transform.localScale = new Vector3((float)width / 2.5f, 1, (float)height / 2.5f);
         Instance.GetComponentInChildren<Grid>().transform.position = new Vector3(-2, (float)0.25, -2);
-        GameManager.Instance.UpdateGameState(GameManager.GameState.FirstTurn);
+        //GameManager.Instance.currentPlayer = 1;
+        GameManager.Instance.UpdateGameState(GameManager.GameState.PlayerTurn);
     }
 
     public Tile GetTileAtPosition(Vector2 position)

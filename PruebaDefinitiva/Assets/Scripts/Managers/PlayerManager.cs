@@ -8,11 +8,16 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] BuildingManager buildingManager;
+    [SerializeField] GameManager gameManager;
 
     public static PlayerManager Instance;
-    public List<Vector2> settlementsPositions;
     [SerializeField] private Button railButton, villageButton, cityButton, diceRollButton, passTurnButton;
     [SerializeField] private TMP_Text clayObtainedText, mountainObtainedText, wheatObtainedText, ironObtainedText, woolObtainedText, woodObtainedText;
+
+    [SerializeField] private BasePlayer newPlayerPrefab;
+    [SerializeField] public List<BasePlayer> playerList;
+
+    private int playerIndex;
 
     void Awake()
     {
@@ -21,20 +26,22 @@ public class PlayerManager : MonoBehaviour
 
     public List<Vector2> GetSettlementsPositions()
     {
+
+        Debug.Log("El indice del jugador actual en GetSettlement: " + playerIndex);
         foreach (var pos in buildingManager.placedGameObjectsPositions)
         {
-            if (!settlementsPositions.Contains(pos))
+            if (!playerList[playerIndex].settlementsPositions.Contains(pos))
             {
-                settlementsPositions.Add(pos);
+                playerList[playerIndex].settlementsPositions.Add(pos);
             }
         }
-        Debug.Log("añado construccion a la lista: " + settlementsPositions.Count);
-        return settlementsPositions;
+        Debug.Log("añado construccion a la lista: " + playerList[playerIndex].settlementsPositions.Count);
+        return playerList[playerIndex].settlementsPositions;
     }
 
     public void PassTurn()
     {
-        GameManager.Instance.UpdateGameState(GameManager.GameState.DiceRoll);
+        GameManager.Instance.UpdateGameState(GameManager.GameState.PlayerTurn);
     }
 
     public void ActiveDiceRollButton()
@@ -73,5 +80,13 @@ public class PlayerManager : MonoBehaviour
     public void Back()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+
+    public void NewPlayer(int index)
+    {
+        var newPlayer = Instantiate(newPlayerPrefab, Vector3Int.zero, Quaternion.identity);
+        playerList.Add(newPlayer);
+        playerIndex = index - 1;
+        Debug.Log("El indice del jugador actual en NewPlayer: " + playerIndex);
     }
 }

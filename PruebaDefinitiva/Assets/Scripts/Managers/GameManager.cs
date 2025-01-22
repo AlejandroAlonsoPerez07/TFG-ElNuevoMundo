@@ -12,8 +12,14 @@ public class GameManager : MonoBehaviour
 
     public static event Action<GameState> ChangeState;
     public int size;
+    public int numberOfPlayers;
+    public int currentPlayer;
+    private int turnCounter = 0;
+    private bool firstTurnPhase = true;
 
     [SerializeField] private TMP_Text displayGameState;
+    [SerializeField] private TMP_Text displayPlayer;
+    
 
     private void Awake()
     {
@@ -37,12 +43,15 @@ public class GameManager : MonoBehaviour
     public void UpdateGameState(GameState newState)
     {
         State = newState;
-        if(displayGameState == null)
+        if(displayGameState == null || displayPlayer == null)
         {
             GameObject targetObject = GameObject.FindGameObjectWithTag("DisplayGameState");
             displayGameState = targetObject.GetComponent<TMP_Text>();
+            GameObject targetObjectPlayer = GameObject.FindGameObjectWithTag("DisplayPlayer");
+            displayPlayer = targetObjectPlayer.GetComponent<TMP_Text>();
         }
         displayGameState.text = newState.ToString();
+        displayPlayer.text = currentPlayer.ToString();
         switch (newState)
         {
             case GameState.CreatingGame:
@@ -58,10 +67,34 @@ public class GameManager : MonoBehaviour
                 
                 BuildingManager.Instance.Update();
                 break;
+            case GameState.PlayerTurn:
+                if(currentPlayer >= numberOfPlayers)
+                {
+                    currentPlayer = 1;
+                }
+                else
+                {
+                    currentPlayer++;
+                }
+                Debug.Log("Turno del jugador: " + currentPlayer);
+
+                if (firstTurnPhase)
+                {
+                    PlayerManager.Instance.NewPlayer(currentPlayer);
+                    this.UpdateGameState(GameState.FirstTurn);
+                    turnCounter++;
+                    if(turnCounter == numberOfPlayers)
+                        firstTurnPhase = false;
+                }
+                else
+                {
+                    this.UpdateGameState(GameState.DiceRoll);
+                }
+                break;
             case GameState.FirstTurn:
                 Debug.Log("Estado de primer turno");
                 PlayerManager.Instance.DeactiveDiceRollButton();
-                BuildingManager.Instance.FirstTurn();
+                BuildingManager.Instance.FirstTurn(currentPlayer);
                 break;
             case GameState.DiceRoll:
                 Debug.Log("Estado de tirando dados");
@@ -87,6 +120,7 @@ public class GameManager : MonoBehaviour
         FirstTurn = 2,
         DiceRoll = 3,
         BuildingPhase = 4,
-        EndTurn = 5
+        EndTurn = 5,
+        PlayerTurn = 6
     }
 }

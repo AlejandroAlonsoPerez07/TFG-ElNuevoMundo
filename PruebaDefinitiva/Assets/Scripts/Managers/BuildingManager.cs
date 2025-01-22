@@ -13,16 +13,23 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] BuildingsDatabaseOS dataBase;
     [SerializeField] InputManager inputManager;
     [SerializeField] Grid grid;
-    private GridData floorData, furnitureData;
-    public List<GameObject> placedGameObjects = new();
-    private int selectedObjectIndex = -1;
     [SerializeField] private PreviewSystem preview;
+
+    private GridData floorData, furnitureData;
+    private int selectedObjectIndex = -1;
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
+
+    public List<GameObject> placedGameObjects = new();
     public List<Vector2> placedGameObjectsPositions = new();
+    public List<Vector2> allPlacedBuildingsPositions = new(); // Aqui se guardan todas las posiciones de todos los edificios colocados por todos los jugadores
 
     private int placedObjectsCount;
+    private int playerIndex;
 
     // Gestion de recursos
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private PlayerManager playerManager;
+
     [SerializeField] private TMP_Text clayText;
     [SerializeField] private TMP_Text ironText;
     [SerializeField] private TMP_Text mountainText;
@@ -187,64 +194,73 @@ public class BuildingManager : MonoBehaviour
             }
             else
             {
-                if (!placedGameObjectsPositions.Contains(posV2))
+                if (!playerManager.playerList[playerIndex].settlementsPositions.Contains(posV2))
                 {
                     placedObjectsCount++;
-                    placedGameObjectsPositions.Add(posV2);
+                    allPlacedBuildingsPositions.Add(posV2);
+                    playerManager.playerList[playerIndex].settlementsPositions.Add(posV2);
                 }
             }
         }
-        Debug.Log("contador de edificios puesto: " + placedGameObjectsPositions.Count);
-        return placedGameObjectsPositions;
+
+        placedGameObjects.Clear();
+        Debug.Log("contador de edificios puesto: " + playerManager.playerList[playerIndex].settlementsPositions.Count);
+        return playerManager.playerList[playerIndex].settlementsPositions;
     }
 
-    public void FirstTurn()
+    public void FirstTurn(int index)
     {
-        //Update();
-        //GameManager.Instance.UpdateGameState(GameManager.GameState.BuildingPhase);
+        playerIndex = index - 1;
     }
 
     // Funciones de actualización
-    void UpdateResourceCountClay(int ID)
+    void UpdateResourceCountClay(int ID, int playerIndex)
     {
         int cost = ID == 2 ? 2 : 1;
-        int currentCount = int.Parse(clayText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[0];
         clayText.text = (currentCount - cost).ToString();
+        playerManager.playerList[playerIndex].resources[0] -= cost;
+        
     }
 
-    void UpdateResourceCountMountain(int ID)
+    void UpdateResourceCountMountain(int ID, int playerIndex)
     {
         int cost = ID == 2 ? 2 : 1;
-        int currentCount = int.Parse(mountainText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[2];
         mountainText.text = (currentCount - cost).ToString();
+        playerManager.playerList[playerIndex].resources[2] -= cost;
     }
 
-    void UpdateResourceCountWheat(int ID)
+    void UpdateResourceCountWheat(int ID, int playerIndex)
     {
         int cost = ID == 2 ? 2 : 1;
-        int currentCount = int.Parse(wheatText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[3];
         wheatText.text = (currentCount - cost).ToString();
+        playerManager.playerList[playerIndex].resources[3] -= cost;
     }
 
-    void UpdateResourceCountIron(int ID)
+    void UpdateResourceCountIron(int ID, int playerIndex)
     {
         int cost = ID == 2 ? 2 : 1;
-        int currentCount = int.Parse(ironText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[1];
         ironText.text = (currentCount - cost).ToString();
+        playerManager.playerList[playerIndex].resources[1] -= cost;
     }
 
-    void UpdateResourceCountWool(int ID)
+    void UpdateResourceCountWool(int ID, int playerIndex)
     {
         int cost = ID == 2 ? 2 : 1;
-        int currentCount = int.Parse(woolText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[5];
         woolText.text = (currentCount - cost).ToString();
+        playerManager.playerList[playerIndex].resources[5] -= cost;
     }
 
-    void UpdateResourceCountWood(int ID)
+    void UpdateResourceCountWood(int ID, int playerIndex)
     {
         int cost = ID == 2 ? 2 : 1;
-        int currentCount = int.Parse(woodText.text);
+        int currentCount = playerManager.playerList[playerIndex].resources[4];
         woodText.text = (currentCount - cost).ToString();
+        playerManager.playerList[playerIndex].resources[4] -= cost;
     }
 
     public void UseResourcesToBuild(int ID)
@@ -252,22 +268,22 @@ public class BuildingManager : MonoBehaviour
         switch (ID) 
         {
             case 0:
-                UpdateResourceCountMountain(0);
-                UpdateResourceCountIron(0);
+                UpdateResourceCountMountain(0, playerIndex);
+                UpdateResourceCountIron(0, playerIndex);
             break;
             case 1:
-                UpdateResourceCountClay(1);
-                UpdateResourceCountWheat(1);
-                UpdateResourceCountWood(1);
-                UpdateResourceCountWool(1);
+                UpdateResourceCountClay(1, playerIndex);
+                UpdateResourceCountWheat(1, playerIndex);
+                UpdateResourceCountWood(1, playerIndex);
+                UpdateResourceCountWool(1, playerIndex);
             break;
             case 2:
-                UpdateResourceCountClay(2);
-                UpdateResourceCountMountain(2);
-                UpdateResourceCountIron(2);
-                UpdateResourceCountWheat(2);
-                UpdateResourceCountWood(2);
-                UpdateResourceCountWool(2);
+                UpdateResourceCountClay(2, playerIndex);
+                UpdateResourceCountMountain(2, playerIndex);
+                UpdateResourceCountIron(2, playerIndex);
+                UpdateResourceCountWheat(2, playerIndex);
+                UpdateResourceCountWood(2, playerIndex);
+                UpdateResourceCountWool(2, playerIndex);
             break;
 
         }
@@ -275,12 +291,20 @@ public class BuildingManager : MonoBehaviour
 
     private void CheckResourcesAmount()
     {
+        /*
         int currentClayCount = int.Parse(clayText.text);
         int currentIronCount = int.Parse(ironText.text);
         int currentStoneCount = int.Parse(mountainText.text);
         int currentWheatCount = int.Parse(wheatText.text);
         int currentWoodCount = int.Parse(woodText.text);
         int currentWoolCount = int.Parse(woolText.text);
+        */
+        int currentClayCount = playerManager.playerList[playerIndex].resources[0];
+        int currentIronCount = playerManager.playerList[playerIndex].resources[1];
+        int currentStoneCount = playerManager.playerList[playerIndex].resources[2];
+        int currentWheatCount = playerManager.playerList[playerIndex].resources[3];
+        int currentWoodCount = playerManager.playerList[playerIndex].resources[4];
+        int currentWoolCount = playerManager.playerList[playerIndex].resources[5];
 
         if (currentIronCount > 0 && currentStoneCount > 0)
         {
