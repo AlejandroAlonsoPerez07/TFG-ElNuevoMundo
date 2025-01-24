@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +26,7 @@ public class BuildingManager : MonoBehaviour
 
     private int placedObjectsCount;
     private int playerIndex;
+    private float currentRotation;
 
     // Gestion de recursos
     [SerializeField] private GameManager gameManager;
@@ -78,7 +80,7 @@ public class BuildingManager : MonoBehaviour
             dataBase.buildingData[selectedObjectIndex].Size);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
-
+        inputManager.OnRotate += RotateBuilding;
     }
 
     private void PlaceStructure()
@@ -95,17 +97,29 @@ public class BuildingManager : MonoBehaviour
         //CheckResourcesAmount();
         GameObject newObject = Instantiate(dataBase.buildingData[selectedObjectIndex].prefab);
         Vector3 cellCenterPosition = grid.GetCellCenterWorld(gridPosition); // obtenemos el centro de la casilla correspondiente a sus coordenadas del mundo
+        Debug.Log("La posicion del objeto colocado: " + cellCenterPosition.y);
+        cellCenterPosition.y = 0.3f;
         newObject.transform.position = cellCenterPosition;
         newObject.layer = LayerMask.NameToLayer("Building");
+        newObject.transform.rotation = Quaternion.Euler(0, currentRotation, 0);
+        ApplyPlayerColorOnBuildings(newObject, playerManager.playerList[playerIndex].playerColor);
+        //newObject.GetComponent<Renderer>().material.color = playerManager.playerList[playerIndex].playerColor;
         placedGameObjects.Add(newObject);
+        Debug.Log("placedGameObjects: " + placedGameObjects.Count);
         GridData selectedData = dataBase.buildingData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
+        
         GetplacedGameObjectsPositions();
-
+        Debug.Log("Mis objetos colocados: " + selectedData.ToString());
+        /*
         selectedData.AddObjectAt(gridPosition,
             dataBase.buildingData[selectedObjectIndex].Size,
             dataBase.buildingData[selectedObjectIndex].ID,
             placedGameObjects.Count - 1);
+        */
+        Debug.Log("placedGameObjects: " + placedGameObjects.Count);
+        Debug.Log("Antes de entrar a descontar");
         preview.UpdatePosition(cellCenterPosition, false);
+        
         UseResourcesToBuild(dataBase.buildingData[selectedObjectIndex].ID);
         StopPlacement();
     }
@@ -117,7 +131,7 @@ public class BuildingManager : MonoBehaviour
 
         // Si estamos en el caso de los "caminos" hacemos esto
         if (selectedData == floorData)
-            if(selectedData.CanPlaceObjectAt(gridPosition, dataBase.buildingData[selectedObjectIndex].Size))
+            //if(selectedData.CanPlaceObjectAt(gridPosition, dataBase.buildingData[selectedObjectIndex].Size))
                 return true;
 
         if (!selectedData.CanPlaceObjectAt(gridPosition, dataBase.buildingData[selectedObjectIndex].Size))
@@ -142,13 +156,22 @@ public class BuildingManager : MonoBehaviour
         return true;
     }
 
+    private void RotateBuilding()
+    {
+        Debug.Log("entro en RotateBuilding si pulso espacio");
+        currentRotation = preview.RotateBuildingPreview();
+        Debug.Log("valor de currentRotation al pulsar espacio: " + currentRotation);
+    }
+
     private void StopPlacement()
     {
         selectedObjectIndex = -1;
         preview.StopShowingPreview();
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
+        inputManager.OnRotate -= RotateBuilding;
         lastDetectedPosition = Vector3Int.zero;
+        currentRotation = 0;
     }
 
     private void OnParticleSystemStopped()
@@ -157,6 +180,7 @@ public class BuildingManager : MonoBehaviour
         preview.StopShowingPreview();
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
+        inputManager.OnRotate -= RotateBuilding;
         lastDetectedPosition = Vector3Int.zero;
 
     }
@@ -340,5 +364,20 @@ public class BuildingManager : MonoBehaviour
     public void UpdateCurrentPlayer(int index)
     {
         playerIndex = index - 1;
+    }
+
+    private void ApplyPlayerColorOnBuildings(GameObject parent, Color color)
+    {
+        
+        Transform baseTransform = parent.GetComponentInChildren<Transform>().Find("Base");
+        Debug.Log("mi base es: " + baseTransform);
+        if (baseTransform != null)
+        {
+            Renderer baseRenderer = baseTransform.GetComponent<Renderer>();
+            if (baseRenderer != null)
+            {
+                baseRenderer.material.color = color;
+            }
+        }
     }
 }

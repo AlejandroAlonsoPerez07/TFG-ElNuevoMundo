@@ -9,6 +9,7 @@ TagManager:
   - DisplayPlayer
   - Village
   - City
+  - Base
   layers:
   - Default
   - TransparentFX

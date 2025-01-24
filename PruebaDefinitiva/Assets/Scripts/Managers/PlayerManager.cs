@@ -99,7 +99,7 @@ public class PlayerManager : MonoBehaviour
     {
         playerIndex = index - 1;
         Debug.Log("playerIndex en checkVictory: " + playerIndex);
-        if (playerList[playerIndex].totalPoints >= 2)
+        if (playerList[playerIndex].totalPoints >= 5)
         {
             PopUpVictory();
             GameManager.Instance.UpdateGameState(GameManager.GameState.Victory);

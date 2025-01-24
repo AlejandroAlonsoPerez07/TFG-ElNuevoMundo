@@ -14,6 +14,7 @@ public class PreviewSystem : MonoBehaviour
 
     [SerializeField] private GameObject actionRadiusPrefab;
     private GameObject actionRadiusIndicator;
+    public float currentRotation = 0f;
 
     private void Start()
     {
@@ -27,12 +28,13 @@ public class PreviewSystem : MonoBehaviour
             actionRadiusIndicator.SetActive(false);
         }
     }
+
     public void StartShowingPlacementPreview(GameObject prefab, Vector2Int size)
     {
         previewObject = Instantiate(prefab);
         PreparePreview(previewObject);
         PrepareCursor(size);
-        cellIndicador.SetActive(true);
+        //cellIndicador.SetActive(true);
         // Configura el radio de acción
         if (actionRadiusIndicator != null)
         {
@@ -82,6 +84,7 @@ public class PreviewSystem : MonoBehaviour
         ApplyFeedback(validity);
         // Mueve el radio de acción junto con el objeto
         MoveActionRadius(position);
+        //RotateBuilding();
     }
 
     private void ApplyFeedback(bool validity)
@@ -120,5 +123,16 @@ public class PreviewSystem : MonoBehaviour
         {
             actionRadiusIndicator.transform.position = new Vector3(position.x, position.y, position.z);
         }
+    }
+
+    public float RotateBuildingPreview()
+    {
+        currentRotation += 45f;
+        if(currentRotation == 360)
+        {
+            currentRotation = 0;
+        }
+        previewObject.transform.rotation = Quaternion.Euler(0, currentRotation, 0);
+        return currentRotation;
     }
 }
