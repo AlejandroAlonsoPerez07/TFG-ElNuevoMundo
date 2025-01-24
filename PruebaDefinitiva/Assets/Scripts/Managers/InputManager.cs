@@ -13,7 +13,7 @@ public class InputManager : MonoBehaviour
 
     private Vector3 lastPosition;
 
-    public event Action OnClicked, OnExit;
+    public event Action OnClicked, OnExit, OnRotate;
     
     void Awake()
     {
@@ -29,6 +29,10 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             OnExit?.Invoke();
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            OnRotate?.Invoke();
         }
     }
 

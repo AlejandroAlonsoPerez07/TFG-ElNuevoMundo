@@ -25,6 +25,7 @@ public class BuildingManager : MonoBehaviour
 
     private int placedObjectsCount;
     private int playerIndex;
+    private float currentRotation;
 
     // Gestion de recursos
     [SerializeField] private GameManager gameManager;
@@ -78,7 +79,7 @@ public class BuildingManager : MonoBehaviour
             dataBase.buildingData[selectedObjectIndex].Size);
         inputManager.OnClicked += PlaceStructure;
         inputManager.OnExit += StopPlacement;
-
+        inputManager.OnRotate += RotateBuilding;
     }
 
     private void PlaceStructure()
@@ -95,8 +96,11 @@ public class BuildingManager : MonoBehaviour
         //CheckResourcesAmount();
         GameObject newObject = Instantiate(dataBase.buildingData[selectedObjectIndex].prefab);
         Vector3 cellCenterPosition = grid.GetCellCenterWorld(gridPosition); // obtenemos el centro de la casilla correspondiente a sus coordenadas del mundo
+        Debug.Log("La posicion del objeto colocado: " + cellCenterPosition.y);
+        cellCenterPosition.y = 0;
         newObject.transform.position = cellCenterPosition;
         newObject.layer = LayerMask.NameToLayer("Building");
+        newObject.transform.rotation = Quaternion.Euler(0, currentRotation, 0); ;
         placedGameObjects.Add(newObject);
         GridData selectedData = dataBase.buildingData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;
         GetplacedGameObjectsPositions();
@@ -142,13 +146,22 @@ public class BuildingManager : MonoBehaviour
         return true;
     }
 
+    private void RotateBuilding()
+    {
+        Debug.Log("entro en RotateBuilding si pulso espacio");
+        currentRotation = preview.RotateBuildingPreview();
+        Debug.Log("valor de currentRotation al pulsar espacio: " + currentRotation);
+    }
+
     private void StopPlacement()
     {
         selectedObjectIndex = -1;
         preview.StopShowingPreview();
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
+        inputManager.OnRotate -= RotateBuilding;
         lastDetectedPosition = Vector3Int.zero;
+        currentRotation = 0;
     }
 
     private void OnParticleSystemStopped()
@@ -157,6 +170,7 @@ public class BuildingManager : MonoBehaviour
         preview.StopShowingPreview();
         inputManager.OnClicked -= PlaceStructure;
         inputManager.OnExit -= StopPlacement;
+        inputManager.OnRotate -= RotateBuilding;
         lastDetectedPosition = Vector3Int.zero;
 
     }
