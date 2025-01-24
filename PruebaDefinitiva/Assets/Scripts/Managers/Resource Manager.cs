@@ -200,4 +200,16 @@ public class ResourceManager : MonoBehaviour
         woodObtainedText.text = "+ " + count.ToString();
         playerManager.playerList[playerIndex].resources[4] += 1;
     }
+
+    public void LoadResourcesOnInterface(int currentPlayer)
+    {
+        playerIndex = currentPlayer - 1;
+        Debug.Log("Estoy en cargar recursos: " + playerIndex);
+        clayText.text = playerManager.playerList[playerIndex].resources[0].ToString();
+        ironText.text = playerManager.playerList[playerIndex].resources[1].ToString();
+        mountainText.text = playerManager.playerList[playerIndex].resources[2].ToString();
+        wheatText.text = playerManager.playerList[playerIndex].resources[3].ToString();
+        woodText.text = playerManager.playerList[playerIndex].resources[4].ToString();
+        woolText.text = playerManager.playerList[playerIndex].resources[5].ToString();
+    }
 }

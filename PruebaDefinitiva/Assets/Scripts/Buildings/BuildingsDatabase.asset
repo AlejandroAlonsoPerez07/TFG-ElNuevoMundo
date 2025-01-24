@@ -18,13 +18,16 @@ MonoBehaviour:
     <Size>k__BackingField: {x: 1, y: 1}
     <ResourcesCost>k__BackingField: 0100000001000000
     <prefab>k__BackingField: {fileID: 4247622355364952009, guid: 9e30f56ce68832e4cb8b72c8431c07e9, type: 3}
+    <Points>k__BackingField: 0
   - <Name>k__BackingField: Village
     <ID>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
     <ResourcesCost>k__BackingField: 01000000010000000100000001000000
     <prefab>k__BackingField: {fileID: 5226549936381267302, guid: 8fa7cf68dcba6e541a32bceb771d122e, type: 3}
+    <Points>k__BackingField: 1
   - <Name>k__BackingField: City
     <ID>k__BackingField: 2
     <Size>k__BackingField: {x: 1, y: 1}
     <ResourcesCost>k__BackingField: 030000000300000003000000030000000300000003000000
     <prefab>k__BackingField: {fileID: 6277664099655870467, guid: ab724c1978cf3e44ab82e47b26d56ae3, type: 3}
+    <Points>k__BackingField: 2
