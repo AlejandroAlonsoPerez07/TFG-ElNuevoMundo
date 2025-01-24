@@ -34,7 +34,7 @@ public class PreviewSystem : MonoBehaviour
         previewObject = Instantiate(prefab);
         PreparePreview(previewObject);
         PrepareCursor(size);
-        cellIndicador.SetActive(true);
+        //cellIndicador.SetActive(true);
         // Configura el radio de acción
         if (actionRadiusIndicator != null)
         {
