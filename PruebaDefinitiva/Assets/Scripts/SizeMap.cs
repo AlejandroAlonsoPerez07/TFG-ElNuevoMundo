@@ -12,9 +12,7 @@ public class SizeMap : MonoBehaviour
         GameManager.Instance.size = 7;
         GameManager.Instance.numberOfPlayers = Mathf.RoundToInt(numberOfPlayersSlider.value);
         Debug.Log("Pequeño " + GameManager.Instance.numberOfPlayers);
-        //GameManager.Instance.UpdateGameState(GameManager.GameState.GenerateGrid);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        //GameManager.Instance.UpdateGameState(GameManager.GameState.GenerateGrid);
     }
     public void CreateMediumMap()
     {
@@ -22,7 +20,6 @@ public class SizeMap : MonoBehaviour
         GameManager.Instance.numberOfPlayers = Mathf.RoundToInt(numberOfPlayersSlider.value);
         Debug.Log("Medio " + GameManager.Instance.numberOfPlayers);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        //GameManager.Instance.UpdateGameState(GameManager.GameState.GenerateGrid);
     }
     public void CreateLargeMap()
     {
@@ -30,6 +27,14 @@ public class SizeMap : MonoBehaviour
         GameManager.Instance.numberOfPlayers = Mathf.RoundToInt(numberOfPlayersSlider.value);
         Debug.Log("Grande " + GameManager.Instance.numberOfPlayers);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        //GameManager.Instance.UpdateGameState(GameManager.GameState.GenerateGrid);
+    }
+
+    public void Exit()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }
