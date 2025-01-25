@@ -11,13 +11,14 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameManager gameManager;
 
     public static PlayerManager Instance;
-    [SerializeField] private Button railButton, villageButton, cityButton, diceRollButton, passTurnButton, victoryButton;
+    [SerializeField] private Button railButton, villageButton, cityButton, diceRollButton, passTurnButton;
     [SerializeField] private TMP_Text clayObtainedText, mountainObtainedText, wheatObtainedText, ironObtainedText, woolObtainedText, woodObtainedText;
+    [SerializeField] private GameObject helpPanel, victoryPanel;
 
     [SerializeField] private BasePlayer newPlayerPrefab;
     [SerializeField] public List<BasePlayer> playerList;
 
-    private int playerIndex;
+    private int playerIndex, pointsToWin = 5;
 
     void Awake()
     {
@@ -99,7 +100,7 @@ public class PlayerManager : MonoBehaviour
     {
         playerIndex = index - 1;
         Debug.Log("playerIndex en checkVictory: " + playerIndex);
-        if (playerList[playerIndex].totalPoints >= 5)
+        if (playerList[playerIndex].totalPoints >= pointsToWin)
         {
             PopUpVictory();
             GameManager.Instance.UpdateGameState(GameManager.GameState.Victory);
@@ -108,6 +109,18 @@ public class PlayerManager : MonoBehaviour
 
     public void PopUpVictory()
     {
-        victoryButton.gameObject.SetActive(true);
+        victoryPanel.SetActive(true);
+    }
+
+    public void DisplayHelp()
+    {
+        helpPanel.SetActive(!helpPanel.activeSelf);
+    }
+
+    public void JustOneMoreTurn()
+    {
+        victoryPanel.SetActive(false);
+        pointsToWin = 10000;
+        GameManager.Instance.UpdateGameState(GameManager.GameState.BuildingPhase);
     }
 }

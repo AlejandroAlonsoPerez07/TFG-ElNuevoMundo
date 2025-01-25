@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
             displayPlayer = targetObjectPlayer.GetComponent<TMP_Text>();
         }
         displayGameState.text = newState.ToString();
-        displayPlayer.text = currentPlayer.ToString();
+        displayPlayer.text = "Jugador " + currentPlayer.ToString();
         switch (newState)
         {
             case GameState.CreatingGame:
