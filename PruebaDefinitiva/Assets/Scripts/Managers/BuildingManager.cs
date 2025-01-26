@@ -240,6 +240,7 @@ public class BuildingManager : MonoBehaviour
     public void FirstTurn(int index)
     {
         playerIndex = index - 1;
+        placedObjectsCount = 0;
         clayText.text = playerManager.playerList[playerIndex].resources[0].ToString();
         ironText.text = playerManager.playerList[playerIndex].resources[1].ToString();
         mountainText.text = playerManager.playerList[playerIndex].resources[3].ToString();

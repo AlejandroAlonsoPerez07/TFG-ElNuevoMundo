@@ -17,9 +17,9 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private BasePlayer newPlayerPrefab;
     [SerializeField] public List<BasePlayer> playerList;
-    [SerializeField] private Image displayPlayerColor;
+    [SerializeField] private Image displayPlayerColor, displayPlayerColorVictory;
 
-    private int playerIndex, pointsToWin = 20;
+    private int playerIndex, pointsToWin = 5;
     public List<Color> colors = new() { new Color(1f,0f,0f,1f), new Color(0.2424675f, 0.07115523f, 0.3867925f, 1f),
                                         new Color(0f,1f,0.4305303f,1f), new Color(0.6509434f, 0.5555875f, 0.2180046f, 1f)};
 
@@ -62,6 +62,10 @@ public class PlayerManager : MonoBehaviour
     public void ActivePassTurnButton()
     {
         passTurnButton.enabled = true;
+    }
+    public void DeactivePassTurnButton()
+    {
+        passTurnButton.enabled = false;
     }
 
     public void DeactivateButtonsOnDiceRollState()
@@ -116,6 +120,7 @@ public class PlayerManager : MonoBehaviour
     public void PopUpVictory()
     {
         victoryPanel.SetActive(true);
+        displayPlayerColorVictory.color = playerList[playerIndex].playerColor;
     }
 
     public void DisplayHelp()

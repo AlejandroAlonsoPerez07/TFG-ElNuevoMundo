@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
 
                 if (firstTurnPhase)
                 {
+                    
                     PlayerManager.Instance.NewPlayer(currentPlayer);
                     this.UpdateGameState(GameState.FirstTurn);
                     turnCounter++;
@@ -95,6 +96,7 @@ public class GameManager : MonoBehaviour
             case GameState.FirstTurn:
                 Debug.Log("Estado de primer turno");
                 ResourceManager.Instance.LoadResourcesOnInterface(currentPlayer);
+                PlayerManager.Instance.DeactivePassTurnButton();
                 PlayerManager.Instance.DeactiveDiceRollButton();
                 BuildingManager.Instance.FirstTurn(currentPlayer);
                 break;
