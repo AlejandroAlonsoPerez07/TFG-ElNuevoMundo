@@ -38,6 +38,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private TMP_Text wheatText;
     [SerializeField] private TMP_Text woodText;
     [SerializeField] private TMP_Text woolText;
+    [SerializeField] private TMP_Text displayPlayerPoints;
 
     [SerializeField] private Button railButton, villageButton, cityButton, diceRollButton, passTurnButton;
 
@@ -215,6 +216,8 @@ public class BuildingManager : MonoBehaviour
             if(furniture.CompareTag("Rail"))
             {
                 placedObjectsCount++;
+                playerManager.playerList[playerIndex].totalPoints += dataBase.buildingData[selectedObjectIndex].Points;
+                displayPlayerPoints.text = playerManager.playerList[playerIndex].totalPoints.ToString() + " pts";
             }
             else
             {
@@ -224,6 +227,7 @@ public class BuildingManager : MonoBehaviour
                     allPlacedBuildingsPositions.Add(posV2);
                     playerManager.playerList[playerIndex].settlementsPositions.Add(posV2);
                     playerManager.playerList[playerIndex].totalPoints += dataBase.buildingData[selectedObjectIndex].Points;
+                    displayPlayerPoints.text = playerManager.playerList[playerIndex].totalPoints.ToString() + " pts";
                 }
             }
         }
@@ -236,6 +240,7 @@ public class BuildingManager : MonoBehaviour
     public void FirstTurn(int index)
     {
         playerIndex = index - 1;
+        placedObjectsCount = 0;
         clayText.text = playerManager.playerList[playerIndex].resources[0].ToString();
         ironText.text = playerManager.playerList[playerIndex].resources[1].ToString();
         mountainText.text = playerManager.playerList[playerIndex].resources[3].ToString();
@@ -273,6 +278,7 @@ public class BuildingManager : MonoBehaviour
     void UpdateResourceCountIron(int ID, int playerIndex)
     {
         int cost = ID == 2 ? 2 : 1;
+        //cost = dataBase.buildingData[ID].ResourcesCost[0];
         int currentCount = playerManager.playerList[playerIndex].resources[1];
         ironText.text = (currentCount - cost).ToString();
         playerManager.playerList[playerIndex].resources[1] -= cost;
@@ -380,4 +386,9 @@ public class BuildingManager : MonoBehaviour
             }
         }
     }
+    /*
+    public void UpdatePlayerPoints(int index)
+    {
+        displayPlayerPoints.text = playerManager.playerList[playerIndex].totalPoints.ToString() + " pts";
+    }*/
 }

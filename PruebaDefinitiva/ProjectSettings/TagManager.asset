@@ -10,6 +10,12 @@ TagManager:
   - Village
   - City
   - Base
+  - ClayObtained
+  - IronObtained
+  - StoneObtained
+  - WheatObtained
+  - WoodObtained
+  - WoolObtained
   layers:
   - Default
   - TransparentFX
