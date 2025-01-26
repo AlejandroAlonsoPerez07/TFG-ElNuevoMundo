@@ -17,8 +17,11 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private BasePlayer newPlayerPrefab;
     [SerializeField] public List<BasePlayer> playerList;
+    [SerializeField] private Image displayPlayerColor;
 
-    private int playerIndex, pointsToWin = 5;
+    private int playerIndex, pointsToWin = 20;
+    public List<Color> colors = new() { new Color(1f,0f,0f,1f), new Color(0.2424675f, 0.07115523f, 0.3867925f, 1f),
+                                        new Color(0f,1f,0.4305303f,1f), new Color(0.6509434f, 0.5555875f, 0.2180046f, 1f)};
 
     void Awake()
     {
@@ -91,8 +94,11 @@ public class PlayerManager : MonoBehaviour
     public void NewPlayer(int index)
     {
         var newPlayer = Instantiate(newPlayerPrefab, Vector3Int.zero, Quaternion.identity);
+        Debug.Log("El nuevo jugador: " + newPlayer.playerColor);
+        newPlayer.playerColor = UpdateColorPlayer();
         playerList.Add(newPlayer);
         playerIndex = index - 1;
+        displayPlayerColor.color = newPlayer.playerColor;
         Debug.Log("El indice del jugador actual en NewPlayer: " + playerIndex);
     }
 
@@ -122,5 +128,19 @@ public class PlayerManager : MonoBehaviour
         victoryPanel.SetActive(false);
         pointsToWin = 10000;
         GameManager.Instance.UpdateGameState(GameManager.GameState.BuildingPhase);
+    }
+
+    public Color UpdateColorPlayer()
+    {
+        Debug.Log("dentro de actualizar el color del jugador (colors.count) " + colors.Count);
+        int random = Random.Range(0, colors.Count);
+        Debug.Log("dentro de actualizar el color del jugador (random) " + random);
+        Color colorSelected = colors[random];
+        Debug.Log("dentro de actualizar el color del jugador (colorSelected) " + colorSelected);
+        colors.RemoveAt(random);
+        Debug.Log("dentro de actualizar el color del jugador (colors.count) despues de eliminar" + colors.Count);
+        return colorSelected;
+        
+        
     }
 }

@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     private bool firstTurnPhase = true;
 
     [SerializeField] private TMP_Text displayGameState;
-    [SerializeField] private TMP_Text displayPlayer;
+    [SerializeField] private TMP_Text displayPlayer, displayPlayerPoints;
     
 
     private void Awake()
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
                 PlayerManager.Instance.CheckVictory(currentPlayer);
                 break;
             case GameState.PlayerTurn:
-                if(currentPlayer >= numberOfPlayers)
+                if (currentPlayer >= numberOfPlayers)
                 {
                     currentPlayer = 1;
                 }
@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.FirstTurn:
                 Debug.Log("Estado de primer turno");
+                ResourceManager.Instance.LoadResourcesOnInterface(currentPlayer);
                 PlayerManager.Instance.DeactiveDiceRollButton();
                 BuildingManager.Instance.FirstTurn(currentPlayer);
                 break;

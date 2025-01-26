@@ -46,3 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settlementsPositions: []
   resources: 010000000100000001000000010000000100000001000000
+  totalPoints: 0
+  playerColor: {r: 0.6509434, g: 0.55558753, b: 0.21800464, a: 0}

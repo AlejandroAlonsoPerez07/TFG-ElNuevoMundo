@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private TMP_Text ironObtainedText;
     [SerializeField] private TMP_Text woolObtainedText;
     [SerializeField] private TMP_Text woodObtainedText;
+
+    [SerializeField] private Image displayPlayerColor;
+    [SerializeField] private TMP_Text displayPlayerPoints;
 
     private int randomNumber, playerIndex;
     public Dictionary<Vector2, Tile> tilesWithSettlementsAndAdjacents = new();
@@ -211,5 +215,8 @@ public class ResourceManager : MonoBehaviour
         wheatText.text = playerManager.playerList[playerIndex].resources[3].ToString();
         woodText.text = playerManager.playerList[playerIndex].resources[4].ToString();
         woolText.text = playerManager.playerList[playerIndex].resources[5].ToString();
+
+        displayPlayerColor.color = playerManager.playerList[playerIndex].playerColor;
+        displayPlayerPoints.text = playerManager.playerList[playerIndex].totalPoints.ToString() + " pts";
     }
 }
