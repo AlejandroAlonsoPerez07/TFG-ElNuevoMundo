@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -21,15 +22,10 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] private TMP_Text woolText;
     [SerializeField] private TMP_Text woodText;
     [SerializeField] private TMP_Text displayDiceRoll;
-    [SerializeField] private TMP_Text clayObtainedText;
-    [SerializeField] private TMP_Text mountainObtainedText;
-    [SerializeField] private TMP_Text wheatObtainedText;
-    [SerializeField] private TMP_Text ironObtainedText;
-    [SerializeField] private TMP_Text woolObtainedText;
-    [SerializeField] private TMP_Text woodObtainedText;
 
-    [SerializeField] private Image displayPlayerColor;
+    [SerializeField] private UnityEngine.UI.Image displayPlayerColor;
     [SerializeField] private TMP_Text displayPlayerPoints;
+    [SerializeField] private GameObject resourceObtainedPanel;
 
     private int randomNumber, playerIndex;
     public Dictionary<Vector2, Tile> tilesWithSettlementsAndAdjacents = new();
@@ -68,9 +64,9 @@ public class ResourceManager : MonoBehaviour
     {
         foreach (var pos in buildingManager.allPlacedBuildingsPositions) // Se recorren todos los edificios sin importar el jugador
         {
-            for(int i = 0; i < playerManager.playerList.Count; i++)
+            for(int i = 0; i < playerManager.playerList.Count; i++) // Se recorren todos los jugadores empezando por el primero
             {
-                if (playerManager.playerList[i].settlementsPositions.Contains(pos))
+                if (playerManager.playerList[i].settlementsPositions.Contains(pos)) // Pregunta si la posicion de la ciudad equivale con alguna de su lista
                 {
                     playerIndex = i;
                     Debug.Log("playerIndex en resourceManager: " + playerIndex);
@@ -92,7 +88,7 @@ public class ResourceManager : MonoBehaviour
                             }
                         }
                     }
-                    UpdateResourceCount(adjacentTiles);
+                    UpdateResourceCount(adjacentTiles); // Devuelve solo las casillas que tengan el numero equivalente al suyo del jugador[i]
                     adjacentTiles.Clear();
                 }
             }
@@ -159,49 +155,61 @@ public class ResourceManager : MonoBehaviour
     // Funciones de actualización
     void UpdateResourceCountClay(int count, int playerIndex)
     {
-        int currentCount = playerManager.playerList[playerIndex].resources[0];
-        clayText.text = (currentCount + 1).ToString();
-        clayObtainedText.text = "+ " + count.ToString();
+        //int currentCount = playerManager.playerList[playerIndex].resources[0];
+        Transform panel = UpdateResourcePanelPlayer(playerIndex);
+        Debug.Log("El panel que he obtenido en arcilla es: " + panel.name);
+        Transform clay = panel.Find("Clay Resource");
+        clay.GetChild(0).GetComponent<TMP_Text>().text = "+ " + count.ToString();
         playerManager.playerList[playerIndex].resources[0] += 1;
     }
 
     void UpdateResourceCountMountain(int count, int playerIndex)
     {
-        int currentCount = playerManager.playerList[playerIndex].resources[2];
-        mountainText.text = (currentCount + 1).ToString();
-        mountainObtainedText.text = "+ " + count.ToString();
+        //int currentCount = playerManager.playerList[playerIndex].resources[2];
+        Transform panel = UpdateResourcePanelPlayer(playerIndex);
+        Debug.Log("El panel que he obtenido en piedra es: " + panel.name);
+        Transform clay = panel.Find("Stone Resource");
+        clay.GetChild(0).GetComponent<TMP_Text>().text = "+ " + count.ToString();
         playerManager.playerList[playerIndex].resources[2] += 1;
     }
 
     void UpdateResourceCountWheat(int count, int playerIndex)
     {
-        int currentCount = playerManager.playerList[playerIndex].resources[3];
-        wheatText.text = (currentCount + 1).ToString();
-        wheatObtainedText.text = "+ " + count.ToString();
+        //int currentCount = playerManager.playerList[playerIndex].resources[3];
+        Transform panel = UpdateResourcePanelPlayer(playerIndex);
+        Debug.Log("El panel que he obtenido en trigo es: " + panel.name);
+        Transform clay = panel.Find("Wheat Resource");
+        clay.GetChild(0).GetComponent<TMP_Text>().text = "+ " + count.ToString();
         playerManager.playerList[playerIndex].resources[3] += 1;
     }
 
     void UpdateResourceCountIron(int count, int playerIndex)
     {
-        int currentCount = playerManager.playerList[playerIndex].resources[1];
-        ironText.text = (currentCount + 1).ToString();
-        ironObtainedText.text = "+ " + count.ToString();
+        //int currentCount = playerManager.playerList[playerIndex].resources[1];
+        Transform panel = UpdateResourcePanelPlayer(playerIndex);
+        Debug.Log("El panel que he obtenido en hierro es: " + panel.name);
+        Transform clay = panel.Find("Iron Resource");
+        clay.GetChild(0).GetComponent<TMP_Text>().text = "+ " + count.ToString();
         playerManager.playerList[playerIndex].resources[1] += 1;
     }
 
     void UpdateResourceCountWool(int count, int playerIndex)
     {
-        int currentCount = playerManager.playerList[playerIndex].resources[5];
-        woolText.text = (currentCount + 1).ToString();
-        woolObtainedText.text = "+ " + count.ToString();
+        //int currentCount = playerManager.playerList[playerIndex].resources[5];
+        Transform panel = UpdateResourcePanelPlayer(playerIndex);
+        Debug.Log("El panel que he obtenido en lana es: " + panel.name);
+        Transform clay = panel.Find("Wool Resource");
+        clay.GetChild(0).GetComponent<TMP_Text>().text = "+ " + count.ToString();
         playerManager.playerList[playerIndex].resources[5] += 1;
     }
 
     void UpdateResourceCountWood(int count, int playerIndex)
     {
-        int currentCount = playerManager.playerList[playerIndex].resources[4];
-        woodText.text = (currentCount + 1).ToString();
-        woodObtainedText.text = "+ " + count.ToString();
+        //int currentCount = playerManager.playerList[playerIndex].resources[4];
+        Transform panel = UpdateResourcePanelPlayer(playerIndex);
+        Debug.Log("El panel que he obtenido en madera es: " + panel.name);
+        Transform clay = panel.Find("Wood Resource");
+        clay.GetChild(0).GetComponent<TMP_Text>().text = "+ " + count.ToString();
         playerManager.playerList[playerIndex].resources[4] += 1;
     }
 
@@ -218,5 +226,23 @@ public class ResourceManager : MonoBehaviour
 
         displayPlayerColor.color = playerManager.playerList[playerIndex].playerColor;
         displayPlayerPoints.text = playerManager.playerList[playerIndex].totalPoints.ToString() + " pts";
+    }
+
+    public Transform UpdateResourcePanelPlayer(int playerIndex)
+    {
+        // Obtengo el panel correspondiente al panel padre dado el indice
+        Transform panel = resourceObtainedPanel.transform.GetChild(playerIndex);
+        return panel;
+    }
+
+    public void UpdateInterfaceResourcesOnInventory(int currentPlayer)
+    {
+        int playerIndex = currentPlayer - 1;
+        clayText.text = playerManager.playerList[playerIndex].resources[0].ToString();
+        ironText.text = playerManager.playerList[playerIndex].resources[1].ToString();
+        mountainText.text = playerManager.playerList[playerIndex].resources[2].ToString();
+        wheatText.text = playerManager.playerList[playerIndex].resources[3].ToString();
+        woodText.text = playerManager.playerList[playerIndex].resources[4].ToString();
+        woolText.text = playerManager.playerList[playerIndex].resources[5].ToString();
     }
 }

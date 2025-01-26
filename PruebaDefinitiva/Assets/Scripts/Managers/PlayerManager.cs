@@ -12,13 +12,12 @@ public class PlayerManager : MonoBehaviour
 
     public static PlayerManager Instance;
     [SerializeField] private Button railButton, villageButton, cityButton, diceRollButton, passTurnButton;
-    [SerializeField] private TMP_Text clayObtainedText, mountainObtainedText, wheatObtainedText, ironObtainedText, woolObtainedText, woodObtainedText;
-    [SerializeField] private GameObject helpPanel, victoryPanel;
+    [SerializeField] private GameObject helpPanel, victoryPanel, resourceObtainedPanel;
 
     [SerializeField] private BasePlayer newPlayerPrefab;
     [SerializeField] public List<BasePlayer> playerList;
     [SerializeField] private Image displayPlayerColor, displayPlayerColorVictory;
-
+    
     private int playerIndex, pointsToWin = 5;
     public List<Color> colors = new() { new Color(1f,0f,0f,1f), new Color(0.2424675f, 0.07115523f, 0.3867925f, 1f),
                                         new Color(0f,1f,0.4305303f,1f), new Color(0.6509434f, 0.5555875f, 0.2180046f, 1f)};
@@ -78,12 +77,16 @@ public class PlayerManager : MonoBehaviour
 
     public void CleanResourcesObtained()
     {
-        clayObtainedText.text = "+ 0";
-        mountainObtainedText.text = "+ 0";
-        wheatObtainedText.text = "+ 0";
-        ironObtainedText.text = "+ 0";
-        woolObtainedText.text = "+ 0";
-        woodObtainedText.text = "+ 0";
+        // Recorro todos los paneles
+        foreach (Transform panel in resourceObtainedPanel.transform)
+        {
+            for(int i = 1; i < panel.childCount; i++) // Recorro todos los hijos de los paneles menos el primero
+            {
+                // Reseteo todos los recursos de cada panel a 0
+                Transform resource = panel.GetChild(i);
+                resource.GetChild(0).GetComponent<TMP_Text>().text = "+ 0";
+            }
+        }
     }
 
     public void Back()
@@ -103,6 +106,7 @@ public class PlayerManager : MonoBehaviour
         playerList.Add(newPlayer);
         playerIndex = index - 1;
         displayPlayerColor.color = newPlayer.playerColor;
+        UpdatePanelCrownColor(newPlayer.playerColor, playerIndex);
         Debug.Log("El indice del jugador actual en NewPlayer: " + playerIndex);
     }
 
@@ -144,8 +148,18 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("dentro de actualizar el color del jugador (colorSelected) " + colorSelected);
         colors.RemoveAt(random);
         Debug.Log("dentro de actualizar el color del jugador (colors.count) despues de eliminar" + colors.Count);
+        Debug.Log("dentro de actualizar el color del jugador (playerIndex)" + playerIndex);
+        
         return colorSelected;
-        
-        
+    }
+
+    public void UpdatePanelCrownColor(Color playerColor, int playerIndex)
+    {
+        // Obtengo el panel correspondiente al panel padre dado el indice
+        Transform panel = resourceObtainedPanel.transform.GetChild(playerIndex);
+        panel.gameObject.SetActive(true);
+        // Obtengo dentro del panel, el objeto que se llama en la jerarquía
+        Transform corona = panel.Find("CrownColorPlayer");
+        corona.GetComponent<Image>().color = playerColor;
     }
 }

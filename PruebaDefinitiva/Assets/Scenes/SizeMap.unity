@@ -584,8 +584,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1911,6 +1911,7 @@ MonoBehaviour:
   currentPlayer: 0
   displayGameState: {fileID: 147737471}
   displayPlayer: {fileID: 1224846919}
+  displayPlayerPoints: {fileID: 0}
 --- !u!4 &966220215
 Transform:
   m_ObjectHideFlags: 0

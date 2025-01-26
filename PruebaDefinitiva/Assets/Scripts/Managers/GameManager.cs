@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.BuildingPhase:
                 Debug.Log("entro en el estado construyendo");
+                ResourceManager.Instance.UpdateInterfaceResourcesOnInventory(currentPlayer);
                 PlayerManager.Instance.ActivePassTurnButton();
                 PlayerManager.Instance.DeactiveDiceRollButton();
                 BuildingManager.Instance.UpdateCurrentPlayer(currentPlayer);
